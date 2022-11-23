@@ -1,5 +1,6 @@
 package com.example.fgoapp
 
+import android.app.TaskStackBuilder.create
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -15,9 +16,11 @@ class Calculator : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculator)
 
+        val instanceOfData = Data(this)
+
         val servantName: AutoCompleteTextView = findViewById(R.id.autoCompleteServantName)
         val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, getServant())
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, instanceOfData.servantName)
 
         servantName.threshold = 1;
         servantName.setAdapter(adapter)
@@ -131,59 +134,5 @@ class Calculator : AppCompatActivity() {
         } else{
             output.toDouble()
         }
-    }
-
-    fun getServant():List<String>{
-        /*var servantNames: List<String>
-        val output: String
-
-        val input: InputStream
-        try {
-            input = assets.open("servantDetails.csv")
-            val size: Int = input.available()
-            val buffer = ByteArray(size)
-            input.read(buffer)
-            output = String(buffer)
-
-            // byte buffer into a string
-            servantNames = output.split(",")
-        } catch (e: IOException) {
-            // TODO Auto-generated catch block
-            e.printStackTrace()
-            return emptyList()
-        }*/
-        val mainActivity = MainActivity()
-
-        val servantNames: MutableList<String> = mutableListOf()
-        val servants = getServants()
-        for (servant in servants){
-            servantNames.add(" " + servant.name + " " + servant.className + " " + servant.rarity + " star(s)")
-        }
-
-        return servantNames
-    }
-    fun getServants():ServantDump{
-        val jsonString = getJsonFromAssets()
-        val servants = Gson().fromJson(jsonString, ServantDump::class.java)
-
-        return servants
-    }
-
-    fun getJsonFromAssets(): String? {
-        var json: String? = null
-        var charset: Charset = Charsets.UTF_8
-        try {
-            val jsonFile = assets.open("nice_servant.json")
-            val size = jsonFile.available()
-            val buffer = ByteArray(size)
-            jsonFile.read(buffer)
-            jsonFile.close()
-            json = String(buffer, charset)
-        }
-        catch(ex: IOException){
-            ex.printStackTrace()
-            return null
-        }
-        return json
     }
 }

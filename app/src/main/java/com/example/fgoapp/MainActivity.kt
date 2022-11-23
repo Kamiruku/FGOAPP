@@ -19,5 +19,8 @@ class MainActivity : AppCompatActivity() {
         buttonToCalculator.setOnClickListener {
             startActivity(Intent(this, Calculator::class.java))
         }
+
+        val instanceOfData = Data(this)
+        instanceOfData.servantName = instanceOfData.getServantNames()
     }
 }
