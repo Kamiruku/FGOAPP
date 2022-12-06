@@ -1,23 +1,25 @@
 package com.example.fgoapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
+import com.example.fgoapp.MainActivity.Companion.servantInfoValue
+import com.example.fgoapp.MainActivity.Companion.servantNames
 import java.text.NumberFormat
 import java.util.*
-
 
 class Calculator : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculator)
 
+        val data = Data()
+
         val autoCompleteServantName: AutoCompleteTextView = findViewById(R.id.autoCompleteServantName)
         val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, InitialStartUp.getServName)
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, servantNames)
 
         autoCompleteServantName.threshold = 1;
         autoCompleteServantName.setAdapter(adapter)
@@ -42,7 +44,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
         autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
             inputName = arg0.getItemAtPosition(arg2).toString()
-            atkGrowth = instanceOfApp.getServantAtk(inputName.trim(), instanceOfApp.servantInfoValue)
+            atkGrowth = data.getServantAtk(inputName.trim(), servantInfoValue)
 
             if (atkGrowth.isNotEmpty()){
                 atkStat = atkGrowth[selectedLevel.toInt() - 1]

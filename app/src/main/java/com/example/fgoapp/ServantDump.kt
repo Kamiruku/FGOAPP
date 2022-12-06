@@ -1,6 +1,9 @@
 package com.example.fgoapp
 
-class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
+import android.renderscript.Script
+import java.io.Serializable
+
+class ServantDump : ArrayList<ServantDump.ServantDumpItem>() , Serializable{
     data class ServantDumpItem(
         val appendPassive: List<AppendPassive>,
         val appendSkillMaterials: AppendSkillMaterials,
@@ -55,13 +58,13 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
         val type: String,
         val valentineEquip: List<Int>,
         val valentineScript: List<ValentineScript>
-    ) {
+    ) : Serializable {
         data class AppendPassive(
             val num: Int,
             val priority: Int,
             val skill: Skill,
             val unlockMaterials: List<UnlockMaterial>
-        ) {
+        ) : Serializable {
             data class Skill(
                 val actIndividuality: List<Any>,
                 val coolDown: List<Int>,
@@ -77,7 +80,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val skillAdd: List<Any>,
                 val type: String,
                 val unmodifiedDetail: String
-            ) {
+            ) : Serializable {
                 data class Function(
                     val buffs: List<Buff>,
                     val funcGroup: List<Any>,
@@ -90,7 +93,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val funcquestTvals: List<Any>,
                     val functvals: List<Any>,
                     val svals: List<Sval>
-                ) {
+                ) : Serializable {
                     data class Buff(
                         val buffGroup: Int,
                         val ckOpIndv: List<CkOpIndv>,
@@ -104,28 +107,28 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val tvals: List<Tval>,
                         val type: String,
                         val vals: List<Val>
-                    ) {
+                    ) : Serializable {
                         data class CkOpIndv(
                             val id: Int,
                             val name: String
-                        )
+                        ) : Serializable
     
                         data class CkSelfIndv(
                             val id: Int,
                             val name: String
-                        )
+                        ) : Serializable
     
-                        class Script
+                        class Script : Serializable
     
                         data class Tval(
                             val id: Int,
                             val name: String
-                        )
+                        ) : Serializable
     
                         data class Val(
                             val id: Int,
                             val name: String
-                        )
+                        ) : Serializable
                     }
     
                     data class Sval(
@@ -134,16 +137,16 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val ShowState: Int,
                         val Turn: Int,
                         val Value: Int
-                    )
+                    ) : Serializable
                 }
     
-                class Script
+                class Script : Serializable
             }
     
             data class UnlockMaterial(
                 val amount: Int,
                 val item: Item
-            ) {
+            ) : Serializable {
                 data class Item(
                     val background: String,
                     val detail: String,
@@ -157,7 +160,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val priority: Int,
                     val type: String,
                     val uses: List<Any>
-                )
+                ) : Serializable
             }
         }
     
@@ -171,15 +174,15 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val `7`: X7,
             val `8`: X8,
             val `9`: X9
-        ) {
+        ) : Serializable {
             data class X1(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -193,18 +196,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X2(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -218,18 +221,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X3(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -243,18 +246,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X4(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -268,18 +271,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X5(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -293,18 +296,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X6(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -318,18 +321,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X7(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -343,18 +346,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X8(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -368,18 +371,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X9(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -393,7 +396,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
         }
@@ -416,168 +419,168 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val overWriteTDRuby: OverWriteTDRuby,
             val overWriteTDTypeText: OverWriteTDTypeText,
             val voicePrefix: VoicePrefix
-        ) {
+        ) : Serializable {
             data class CharaGraphChange(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class CharaGraphChangeCommonRelease(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class FaceChange(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class FaceChangeCommonRelease(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class Individuality(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
                 data class Costume(
                     val `100130`: List<Any>
-                )
+                ) : Serializable
             }
     
             data class LvMax(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `0`: Int,
                     val `1`: Int,
                     val `2`: Int,
                     val `3`: Int,
                     val `4`: Int
-                )
+                ) : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OriginalOverWriteServantBattleName(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OriginalOverWriteServantName(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OriginalOverWriteTDName(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OverWriteServantBattleName(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OverWriteServantName(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OverWriteTDFileName(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OverWriteTDName(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OverWriteTDRank(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OverWriteTDRuby(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class OverWriteTDTypeText(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
-                class Costume
+                class Costume : Serializable
             }
     
             data class VoicePrefix(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
-                class Ascension
+            ) : Serializable {
+                class Ascension : Serializable
     
                 data class Costume(
                     val `100130`: Int
-                )
+                ) : Serializable
             }
         }
     
@@ -586,15 +589,15 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val `1`: X1,
             val `2`: X2,
             val `3`: X3
-        ) {
+        ) : Serializable {
             data class X0(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -608,18 +611,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X1(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -633,18 +636,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X2(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -658,18 +661,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X3(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -683,7 +686,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
         }
@@ -693,41 +696,41 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val buster: Buster,
             val extra: Extra,
             val quick: Quick
-        ) {
+        ) : Serializable {
             data class Arts(
                 val attackIndividuality: List<AttackIndividuality>
-            ) {
+            ) : Serializable {
                 data class AttackIndividuality(
                     val id: Int,
                     val name: String
-                )
+                ) : Serializable
             }
     
             data class Buster(
                 val attackIndividuality: List<AttackIndividuality>
-            ) {
+            ) : Serializable {
                 data class AttackIndividuality(
                     val id: Int,
                     val name: String
-                )
+                ) : Serializable
             }
     
             data class Extra(
                 val attackIndividuality: List<AttackIndividuality>
-            ) {
+            ) : Serializable {
                 data class AttackIndividuality(
                     val id: Int,
                     val name: String
-                )
+                ) : Serializable
             }
     
             data class Quick(
                 val attackIndividuality: List<AttackIndividuality>
-            ) {
+            ) : Serializable {
                 data class AttackIndividuality(
                     val id: Int,
                     val name: String
-                )
+                ) : Serializable
             }
         }
     
@@ -746,7 +749,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val skillAdd: List<Any>,
             val type: String,
             val unmodifiedDetail: String
-        ) {
+        ) : Serializable {
             data class Function(
                 val buffs: List<Buff>,
                 val funcGroup: List<Any>,
@@ -759,7 +762,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val funcquestTvals: List<Any>,
                 val functvals: List<Any>,
                 val svals: List<Sval>
-            ) {
+            ) : Serializable {
                 data class Buff(
                     val buffGroup: Int,
                     val ckOpIndv: List<CkOpIndv>,
@@ -773,28 +776,28 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val tvals: List<Tval>,
                     val type: String,
                     val vals: List<Val>
-                ) {
+                ) : Serializable {
                     data class CkOpIndv(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
     
                     data class CkSelfIndv(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
     
-                    class Script
+                    class Script : Serializable
     
                     data class Tval(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
     
                     data class Val(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
                 }
     
                 data class Sval(
@@ -802,16 +805,16 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val Rate: Int,
                     val Turn: Int,
                     val Value: Int
-                )
+                ) : Serializable
             }
     
-            class Script
+            class Script : Serializable
         }
     
         data class Coin(
             val item: Item,
             val summonNum: Int
-        ) {
+        ) : Serializable {
             data class Item(
                 val background: String,
                 val detail: String,
@@ -825,20 +828,20 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val priority: Int,
                 val type: String,
                 val uses: List<Any>
-            )
+            ) : Serializable
         }
     
         data class CostumeMaterials(
             val `100130`: X100130
-        ) {
+        ) : Serializable {
             data class X100130(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -852,7 +855,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
         }
@@ -874,138 +877,138 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val narrowFigureChange: NarrowFigureChange,
             val spriteModel: SpriteModel,
             val status: Status
-        ) {
+        ) : Serializable {
             data class CharaFigure(
                 val ascension: Ascension,
                 val costume: Costume,
                 val story: Story
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `1`: String,
                     val `2`: String,
                     val `3`: String
-                )
+                ) : Serializable
     
                 data class Costume(
                     val `100130`: String
-                )
+                ) : Serializable
     
                 data class Story(
                     val `98060000`: String
-                )
+                ) : Serializable
             }
     
-            class CharaFigureForm
+            class CharaFigureForm : Serializable
     
-            class CharaFigureMulti
+            class CharaFigureMulti : Serializable
     
             data class CharaGraph(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `1`: String,
                     val `2`: String,
                     val `3`: String,
                     val `4`: String
-                )
+                ) : Serializable
     
                 data class Costume(
                     val `100130`: String
-                )
+                ) : Serializable
             }
     
-            class CharaGraphChange
+            class CharaGraphChange : Serializable
     
-            class CharaGraphEx
+            class CharaGraphEx : Serializable
     
-            class CharaGraphName
+            class CharaGraphName : Serializable
     
             data class Commands(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `1`: String,
                     val `2`: String,
                     val `3`: String
-                )
+                ) : Serializable
     
                 data class Costume(
                     val `100130`: String
-                )
+                ) : Serializable
             }
     
-            class EquipFace
+            class EquipFace : Serializable
     
             data class Faces(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `1`: String,
                     val `2`: String,
                     val `3`: String,
                     val `4`: String
-                )
+                ) : Serializable
     
                 data class Costume(
                     val `100130`: String
-                )
+                ) : Serializable
             }
     
-            class FacesChange
+            class FacesChange : Serializable
     
             data class Image(
                 val story: Story
-            ) {
-                class Story
+            ) : Serializable {
+                class Story : Serializable
             }
     
             data class NarrowFigure(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `1`: String,
                     val `2`: String,
                     val `3`: String,
                     val `4`: String
-                )
+                ) : Serializable
     
                 data class Costume(
                     val `100130`: String
-                )
+                ) : Serializable
             }
     
-            class NarrowFigureChange
+            class NarrowFigureChange : Serializable
     
             data class SpriteModel(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `0`: String
-                )
+                ) : Serializable
     
                 data class Costume(
                     val `100130`: String
-                )
+                ) : Serializable
             }
     
             data class Status(
                 val ascension: Ascension,
                 val costume: Costume
-            ) {
+            ) : Serializable {
                 data class Ascension(
                     val `1`: String,
                     val `2`: String,
                     val `3`: String
-                )
+                ) : Serializable
     
                 data class Costume(
                     val `100130`: String
-                )
+                ) : Serializable
             }
         }
     
@@ -1024,7 +1027,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val skillAdd: List<Any>,
             val type: String,
             val unmodifiedDetail: String
-        ) {
+        ) : Serializable {
             data class ExtraPassive(
                 val condFriendshipRank: Int,
                 val condLimitCount: Int,
@@ -1037,7 +1040,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val num: Int,
                 val priority: Int,
                 val startedAt: Int
-            )
+            ) : Serializable
     
             data class Function(
                 val buffs: List<Buff>,
@@ -1051,7 +1054,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val funcquestTvals: List<FuncquestTval>,
                 val functvals: List<Any>,
                 val svals: List<Sval>
-            ) {
+            ) : Serializable {
                 data class Buff(
                     val buffGroup: Int,
                     val ckOpIndv: List<Any>,
@@ -1065,13 +1068,13 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val tvals: List<Any>,
                     val type: String,
                     val vals: List<Val>
-                ) {
-                    class Script
+                ) : Serializable {
+                    class Script : Serializable
     
                     data class Val(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
                 }
     
                 data class FuncGroup(
@@ -1082,12 +1085,12 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val name: String,
                     val nameTotal: String,
                     val priority: Int
-                )
+                ) : Serializable
     
                 data class FuncquestTval(
                     val id: Int,
                     val name: String
-                )
+                ) : Serializable
     
                 data class Sval(
                     val Count: Int,
@@ -1099,10 +1102,10 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val Target: Int,
                     val Turn: Int,
                     val Value: Int
-                )
+                ) : Serializable
             }
     
-            class Script
+            class Script : Serializable
         }
     
         data class HitsDistribution(
@@ -1110,7 +1113,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val buster: List<Int>,
             val extra: List<Int>,
             val quick: List<Int>
-        )
+        ) : Serializable
     
         data class NoblePhantasm(
             val card: String,
@@ -1134,7 +1137,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val strengthStatus: Int,
             val type: String,
             val unmodifiedDetail: String
-        ) {
+        ) : Serializable {
             data class Function(
                 val buffs: List<Any>,
                 val funcGroup: List<Any>,
@@ -1150,37 +1153,37 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val svals3: List<Svals3>,
                 val svals4: List<Svals4>,
                 val svals5: List<Svals5>
-            ) {
+            ) : Serializable {
                 data class Sval(
                     val Rate: Int,
                     val Value: Int
-                )
+                ) : Serializable
     
                 data class Svals2(
                     val Rate: Int,
                     val Value: Int
-                )
+                ) : Serializable
     
                 data class Svals3(
                     val Rate: Int,
                     val Value: Int
-                )
+                ) : Serializable
     
                 data class Svals4(
                     val Rate: Int,
                     val Value: Int
-                )
+                ) : Serializable
     
                 data class Svals5(
                     val Rate: Int,
                     val Value: Int
-                )
+                ) : Serializable
             }
     
             data class Individuality(
                 val id: Int,
                 val name: String
-            )
+            ) : Serializable
     
             data class NpGain(
                 val arts: List<Int>,
@@ -1189,12 +1192,12 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val extra: List<Int>,
                 val np: List<Int>,
                 val quick: List<Int>
-            )
+            ) : Serializable
     
-            class Script
+            class Script : Serializable
         }
     
-        class Script
+        class Script : Serializable
     
         data class SkillMaterials(
             val `1`: X1,
@@ -1206,15 +1209,15 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val `7`: X7,
             val `8`: X8,
             val `9`: X9
-        ) {
+        ) : Serializable {
             data class X1(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1228,18 +1231,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X2(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1253,18 +1256,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X3(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1278,18 +1281,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X4(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1303,18 +1306,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X5(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1328,18 +1331,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X6(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1353,18 +1356,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X7(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1378,18 +1381,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X8(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1403,18 +1406,18 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
     
             data class X9(
                 val items: List<Item>,
                 val qp: Int
-            ) {
+            ) : Serializable {
                 data class Item(
                     val amount: Int,
                     val item: Item
-                ) {
+                ) : Serializable {
                     data class Item(
                         val background: String,
                         val detail: String,
@@ -1428,7 +1431,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                         val priority: Int,
                         val type: String,
                         val uses: List<String>
-                    )
+                    ) : Serializable
                 }
             }
         }
@@ -1455,7 +1458,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val strengthStatus: Int,
             val type: String,
             val unmodifiedDetail: String
-        ) {
+        ) : Serializable {
             data class Function(
                 val buffs: List<Buff>,
                 val funcGroup: List<Any>,
@@ -1468,7 +1471,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                 val funcquestTvals: List<Any>,
                 val functvals: List<Any>,
                 val svals: List<Sval>
-            ) {
+            ) : Serializable {
                 data class Buff(
                     val buffGroup: Int,
                     val ckOpIndv: List<Any>,
@@ -1482,23 +1485,23 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val tvals: List<Tval>,
                     val type: String,
                     val vals: List<Val>
-                ) {
+                ) : Serializable {
                     data class CkSelfIndv(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
     
-                    class Script
+                    class Script : Serializable
     
                     data class Tval(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
     
                     data class Val(
                         val id: Int,
                         val name: String
-                    )
+                    ) : Serializable
                 }
     
                 data class Sval(
@@ -1507,10 +1510,10 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
                     val Rate: Int,
                     val Turn: Int,
                     val Value: Int
-                )
+                ) : Serializable
             }
     
-            class Script
+            class Script : Serializable
         }
     
         data class TraitAdd(
@@ -1520,22 +1523,22 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>(){
             val idx: Int,
             val limitCount: Int,
             val trait: List<Trait>
-        ) {
+        ) : Serializable {
             data class Trait(
                 val id: Int,
                 val name: String
-            )
+            ) : Serializable
         }
     
         data class Trait(
             val id: Int,
             val name: String
-        )
+        ) : Serializable
     
         data class ValentineScript(
             val script: String,
             val scriptId: String,
             val scriptName: String
-        )
+        ) : Serializable
     }
 }
