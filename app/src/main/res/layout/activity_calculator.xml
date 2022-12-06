@@ -22,14 +22,16 @@
         android:id="@+id/text_Damage_Low_Roll_Label"
         android:layout_width="125dp"
         android:layout_height="18sp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:text="Low"
         android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/text_Damage_Average_Roll"
@@ -39,7 +41,7 @@
         android:background="@drawable/my_border"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_Damage_Average_Roll_Label" />
 
@@ -47,14 +49,14 @@
         android:id="@+id/text_Damage_Average_Roll_Label"
         android:layout_width="125dp"
         android:layout_height="18dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="8dp"
         android:text="Average"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_Low_Roll" />
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <TextView
         android:id="@+id/text_Damage_High_Roll"
@@ -79,20 +81,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_Average_Roll" />
+        app:layout_constraintTop_toBottomOf="@+id/text_Damage_Low_Roll" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="Projected Damage"
         android:textSize="16sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewServantName"
+        app:layout_constraintVertical_bias="0.075" />
 
     <Button
         android:id="@+id/button_Calculate_Damage"
@@ -292,28 +295,74 @@
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteServantName"
-        android:layout_width="175sp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
+        android:layout_width="200sp"
+        android:layout_height="24sp"
         android:background="@null"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/text_Attack_Buff"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/text_Damage_Low_Roll"
+        app:layout_constraintHorizontal_bias="0.27"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewServantName"
-        app:layout_constraintVertical_bias="0.045" />
+        app:layout_constraintVertical_bias="0.053" />
 
     <TextView
         android:id="@+id/textViewServantName"
-        android:layout_width="wrap_content"
+        android:layout_width="125sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:text="Name"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.115"
-        app:layout_constraintStart_toEndOf="@+id/textView5"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Spinner
+        android:id="@+id/spinnerLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:dropDownWidth="match_parent"
+        android:minHeight="48dp"
+        android:spinnerMode="dropdown"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.594"
+        app:layout_constraintStart_toEndOf="@+id/textViewLevel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewLevel"
+        android:layout_width="30sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Level"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.226"
+        app:layout_constraintStart_toEndOf="@+id/textViewServantName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewAttackStat"
+        android:layout_width="30sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="ATK"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.271"
+        app:layout_constraintStart_toEndOf="@+id/textViewServantName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLevel" />
+
+    <TextView
+        android:id="@+id/textViewAtkStat"
+        android:layout_width="80sp"
+        android:layout_height="21dp"
+        android:layout_marginTop="52dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.423"
+        app:layout_constraintStart_toEndOf="@+id/textViewAttackStat"
+        app:layout_constraintTop_toBottomOf="@+id/textViewLevel" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,30 +1,80 @@
 package com.example.fgoapp
 
-import android.app.TaskStackBuilder.create
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.*
-import java.io.IOException
-import java.io.InputStream
+import android.widget.AdapterView.OnItemClickListener
+import androidx.appcompat.app.AppCompatActivity
 import java.text.NumberFormat
 import java.util.*
-import com.google.gson.Gson
-import java.nio.charset.Charset
 
-class Calculator : AppCompatActivity() {
+
+class Calculator : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculator)
 
-        val instanceOfData = Data(this)
-
-        val servantName: AutoCompleteTextView = findViewById(R.id.autoCompleteServantName)
+        val autoCompleteServantName: AutoCompleteTextView = findViewById(R.id.autoCompleteServantName)
         val adapter: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, instanceOfData.servantName)
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, InitialStartUp.getServName)
 
-        servantName.threshold = 1;
-        servantName.setAdapter(adapter)
+        autoCompleteServantName.threshold = 1;
+        autoCompleteServantName.setAdapter(adapter)
+        adapter.notifyDataSetChanged()
 
+        val level: MutableList<String> = mutableListOf()
+        for (i in 1 until 121){
+            level.add(i.toString())
+        }
+
+        val spinnerLevels: Spinner = findViewById(R.id.spinnerLevel)
+        val adapterSpinnerLevel: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, level)
+        spinnerLevels.adapter = adapterSpinnerLevel
+
+        var inputName: String = "Meow"
+        var atkGrowth: List<Int> = listOf()
+        var selectedLevel: String = "1"
+        var atkStat: Int = 1
+
+        val textViewAtkStat: TextView = findViewById(R.id.textViewAtkStat)
+
+        autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
+            inputName = arg0.getItemAtPosition(arg2).toString()
+            atkGrowth = instanceOfApp.getServantAtk(inputName.trim(), instanceOfApp.servantInfoValue)
+
+            if (atkGrowth.isNotEmpty()){
+                atkStat = atkGrowth[selectedLevel.toInt() - 1]
+                textViewAtkStat.text = atkStat.toString()
+                showDamage(atkStat.toDouble())
+            }
+            else{
+                Toast.makeText(applicationContext, "Please select a servant from the suggestion box", Toast.LENGTH_LONG)
+            }
+        }
+
+        spinnerLevels.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
+
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long){
+                if (p0 != null) {
+                    selectedLevel = p0.getItemAtPosition(p2).toString()
+
+                    if (atkGrowth.isNotEmpty()){
+                        atkStat = atkGrowth[selectedLevel.toInt() - 1]
+                        textViewAtkStat.text = atkStat.toString()
+                        showDamage(atkStat.toDouble())
+                    }
+                    else{
+                        Toast.makeText(applicationContext, "Please select a servant from the suggestion box", Toast.LENGTH_LONG)
+                    }
+                }
+            }
+        }
+    }
+    fun showDamage(servantAtk: Double){
         val buttonCalculateDamage: Button = findViewById(R.id.button_Calculate_Damage)
         val textLowRollDamage: TextView = findViewById(R.id.text_Damage_Low_Roll)
         val textAverageRollDamage: TextView = findViewById(R.id.text_Damage_Average_Roll)
@@ -56,9 +106,9 @@ class Calculator : AppCompatActivity() {
             superEffectiveModifier = editTextToDouble(editTextSEBuffs) / 100
             dmgPlusAdd = editTextToDouble(editTextDMGPlus)
 
-            lowRollDamage = calculateDamage(cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            averageRollDamage = calculateDamage(cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            highRollDamage = calculateDamage(cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            lowRollDamage = calculateDamage(servantAtk, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            averageRollDamage = calculateDamage(servantAtk, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            highRollDamage = calculateDamage(servantAtk, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
 
             textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
                 .format(lowRollDamage)
@@ -69,11 +119,10 @@ class Calculator : AppCompatActivity() {
         }
     }
 
-    fun calculateDamage(cardMod:Double, randomModifier: Double,  atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double,
+    fun calculateDamage(servantAtk: Double, cardMod:Double, randomModifier: Double,  atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double,
                         dmgPlusAdd:Double):Double{
         var damage:Double
 
-        var servantAtk:Double
         var npDamageMultiplier:Double
         var firstCardBonus:Double //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
         var cardDamageValue:Double
@@ -92,7 +141,6 @@ class Calculator : AppCompatActivity() {
         var selfDmgCutAdd:Double
         var busterChainMod:Double //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
 
-        servantAtk = 13641.00
         npDamageMultiplier = 11.00
         firstCardBonus = 0.00
         cardDamageValue = 0.80
@@ -134,5 +182,9 @@ class Calculator : AppCompatActivity() {
         } else{
             output.toDouble()
         }
+    }
+
+    override fun onClick(p0: View?) {
+        TODO("Not yet implemented")
     }
 }

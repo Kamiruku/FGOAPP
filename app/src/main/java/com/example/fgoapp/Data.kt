@@ -1,5 +1,7 @@
 package com.example.fgoapp
 
+import android.app.Activity
+import android.app.Application
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,11 +14,22 @@ import com.google.gson.Gson
 import java.nio.charset.Charset
 import android.content.res.AssetManager
 
-class Data(var context: Context) {
+class InitialStartUp : Application() {
+    var servantInfoValue = getServantInfo()
+    var servantName: List<String> = getServantNames(servantInfoValue)
+    override fun onCreate() {
+        super.onCreate()
+    }
 
-    var servantName: List<String> = listOf()
+    fun getServInfoVal(): ServantDump{
+        return servantInfoValue
+    }
 
-    fun getServantNames():List<String>{
+    fun getServName(): List<String>{
+        return servantName
+    }
+
+    fun getServantNames(servantInfo: ServantDump):List<String>{
         /*var servantNames: List<String>
         val output: String
 
@@ -36,9 +49,8 @@ class Data(var context: Context) {
             return emptyList()
         }*/
         val servantNames: MutableList<String> = mutableListOf()
-        val servants = getServantInfo()
-        for (servant in servants){
-            servantNames.add(" " + servant.name + " " + servant.className + " " + servant.rarity + " star(s)")
+        for (servant in servantInfo){
+            servantNames.add(servant.name)
         }
 
         return servantNames
@@ -51,10 +63,10 @@ class Data(var context: Context) {
     }
 
     fun getJsonFromAssets(): String? {
-        var json: String? = null
+        var json: String?
         var charset: Charset = Charsets.UTF_8
         try {
-            val jsonFile = this.context.assets.open("nice_servant.json")
+            val jsonFile = assets.open("nice_servant.json")
             val size = jsonFile.available()
             val buffer = ByteArray(size)
             jsonFile.read(buffer)
@@ -66,5 +78,15 @@ class Data(var context: Context) {
             return null
         }
         return json
+    }
+
+    fun getServantAtk(inputName: String, servantInfo: ServantDump): List<Int>{
+        for (servant in servantInfo){
+            if (inputName == servant.name){
+                return servant.atkGrowth
+            }
+        }
+
+        return emptyList()
     }
 }

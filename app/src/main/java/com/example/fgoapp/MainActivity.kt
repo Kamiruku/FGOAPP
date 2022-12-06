@@ -1,14 +1,11 @@
 package com.example.fgoapp
 
+import android.app.Application
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
-import com.google.gson.Gson
-import java.io.IOException
-import java.nio.Buffer
-import java.nio.charset.Charset
+import androidx.appcompat.app.AppCompatActivity
+
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,8 +16,5 @@ class MainActivity : AppCompatActivity() {
         buttonToCalculator.setOnClickListener {
             startActivity(Intent(this, Calculator::class.java))
         }
-
-        val instanceOfData = Data(this)
-        instanceOfData.servantName = instanceOfData.getServantNames()
     }
 }
