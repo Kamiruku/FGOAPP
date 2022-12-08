@@ -10,6 +10,7 @@ import com.example.fgoapp.MainActivity.Companion.servantNames
 import java.text.NumberFormat
 import java.util.*
 
+
 class Calculator : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,24 +19,37 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val data = Data()
 
         val autoCompleteServantName: AutoCompleteTextView = findViewById(R.id.autoCompleteServantName)
-        val adapter: ArrayAdapter<String> =
+        val adapterAutoCompleteNames: ArrayAdapter<String> =
             ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, servantNames)
 
         autoCompleteServantName.threshold = 1;
-        autoCompleteServantName.setAdapter(adapter)
-        adapter.notifyDataSetChanged()
+        autoCompleteServantName.setAdapter(adapterAutoCompleteNames)
+        adapterAutoCompleteNames.notifyDataSetChanged()
 
-        val level: MutableList<String> = mutableListOf()
+        val levels: MutableList<String> = mutableListOf()
         for (i in 1 until 121){
-            level.add(i.toString())
+            levels.add(i.toString())
         }
 
-        val spinnerLevels: Spinner = findViewById(R.id.spinnerLevel)
-        val adapterSpinnerLevel: ArrayAdapter<String> =
-            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, level)
-        spinnerLevels.adapter = adapterSpinnerLevel
+        val autoCompleteServantLevel: AutoCompleteTextView = findViewById(R.id.autoCompleteServantLevel)
+        val adapterAutoCompleteLevel: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, levels)
 
-        var inputName: String = "Meow"
+        autoCompleteServantLevel.threshold = 1
+        autoCompleteServantLevel.setAdapter(adapterAutoCompleteLevel)
+        adapterAutoCompleteLevel.notifyDataSetChanged()
+
+        val npLevels = arrayOf<String>(" 1 ", " 2 ", " 3 ", " 4 ", " 5 ")
+
+        val spinnerNPLevel: Spinner = findViewById(R.id.spinnerNPLevel)
+        val adapterSpinnerNPLevel: ArrayAdapter<String> =
+            ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, npLevels)
+        spinnerNPLevel.adapter = adapterSpinnerNPLevel
+
+        var nPLevel: Int = 1
+        var nPMultiplier: Double? = null
+
+        var inputName: String = "God"
         var atkGrowth: List<Int> = listOf()
         var selectedLevel: String = "1"
         var atkStat: Int = 1
@@ -46,37 +60,41 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             inputName = arg0.getItemAtPosition(arg2).toString()
             atkGrowth = data.getServantAtk(inputName.trim(), servantInfoValue)
 
-            if (atkGrowth.isNotEmpty()){
+            if (atkGrowth.isNotEmpty() && nPLevel != null){
+                nPMultiplier = data.getNPMultiplier(inputName, servantInfoValue)[nPLevel!! - 1].Value.toDouble() / 1000
                 atkStat = atkGrowth[selectedLevel.toInt() - 1]
                 textViewAtkStat.text = atkStat.toString()
-                showDamage(atkStat.toDouble())
-            }
-            else{
-                Toast.makeText(applicationContext, "Please select a servant from the suggestion box", Toast.LENGTH_LONG)
+                showDamage(atkStat.toDouble(), nPMultiplier!!)
             }
         }
 
-        spinnerLevels.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(p0: AdapterView<*>?) {
+        autoCompleteServantLevel.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
+            selectedLevel = arg0.getItemAtPosition(arg2).toString()
+
+            if (atkGrowth.isNotEmpty() && nPLevel != null) {
+                nPMultiplier = data.getNPMultiplier(inputName, servantInfoValue)[nPLevel!! - 1].Value.toDouble() / 1000
+                atkStat = atkGrowth[selectedLevel.toInt() - 1]
+                textViewAtkStat.text = atkStat.toString()
+                showDamage(atkStat.toDouble(), nPMultiplier!!)
             }
+        }
 
-            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long){
-                if (p0 != null) {
-                    selectedLevel = p0.getItemAtPosition(p2).toString()
+        spinnerNPLevel.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                nPLevel = parent.getItemAtPosition(position).toString().trim().toInt()
 
-                    if (atkGrowth.isNotEmpty()){
-                        atkStat = atkGrowth[selectedLevel.toInt() - 1]
-                        textViewAtkStat.text = atkStat.toString()
-                        showDamage(atkStat.toDouble())
-                    }
-                    else{
-                        Toast.makeText(applicationContext, "Please select a servant from the suggestion box", Toast.LENGTH_LONG)
-                    }
+                if (atkGrowth.isNotEmpty() && nPLevel != null){
+                    nPMultiplier = data.getNPMultiplier(inputName, servantInfoValue)[nPLevel!! - 1].Value.toDouble() / 1000
+                    textViewAtkStat.text = atkStat.toString()
+                    showDamage(atkStat.toDouble(), nPMultiplier!!)
                 }
             }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
+
     }
-    fun showDamage(servantAtk: Double){
+    private fun showDamage(servantAtk: Double, npDamageMultiplier: Double){
         val buttonCalculateDamage: Button = findViewById(R.id.button_Calculate_Damage)
         val textLowRollDamage: TextView = findViewById(R.id.text_Damage_Low_Roll)
         val textAverageRollDamage: TextView = findViewById(R.id.text_Damage_Average_Roll)
@@ -108,9 +126,9 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             superEffectiveModifier = editTextToDouble(editTextSEBuffs) / 100
             dmgPlusAdd = editTextToDouble(editTextDMGPlus)
 
-            lowRollDamage = calculateDamage(servantAtk, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            averageRollDamage = calculateDamage(servantAtk, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            highRollDamage = calculateDamage(servantAtk, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            highRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
 
             textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
                 .format(lowRollDamage)
@@ -121,11 +139,10 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    fun calculateDamage(servantAtk: Double, cardMod:Double, randomModifier: Double,  atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double,
-                        dmgPlusAdd:Double):Double{
+    private fun calculateDamage(servantAtk: Double, npDamageMultiplier: Double, cardMod:Double, randomModifier: Double, atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double,
+                                dmgPlusAdd:Double):Double{
         var damage:Double
 
-        var npDamageMultiplier:Double
         var firstCardBonus:Double //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
         var cardDamageValue:Double
         var classAtkBonus:Double
@@ -143,7 +160,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var selfDmgCutAdd:Double
         var busterChainMod:Double //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
 
-        npDamageMultiplier = 11.00
         firstCardBonus = 0.00
         cardDamageValue = 0.80
         classAtkBonus = 1.10
@@ -170,13 +186,13 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         return damage.round(2)
     }
 
-    fun Double.round(decimals: Int): Double {
+    private fun Double.round(decimals: Int): Double {
         var multiplier = 1.0
         repeat(decimals) { multiplier *= 10 }
         return kotlin.math.round(this * multiplier) / multiplier
     }
 
-    fun editTextToDouble(input: EditText):Double{
+    private fun editTextToDouble(input: EditText):Double{
         var output = input.text.toString().trim()
 
         return if (output.isEmpty()){

@@ -25,4 +25,14 @@ class Data {
 
         return emptyList()
     }
+
+    fun getNPMultiplier(inputName: String, servantInfo: ServantDump): List<ServantDump.ServantDumpItem.NoblePhantasm.Function.Sval>{
+        for (servants in servantInfo){
+            if (inputName == servants.name){
+                return servants.noblePhantasms[1].functions[0].svals
+            }
+        }
+
+        return emptyList()
+    }
 }

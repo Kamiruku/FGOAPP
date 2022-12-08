@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Calculator">
@@ -23,7 +24,7 @@
         android:layout_width="125dp"
         android:layout_height="18sp"
         android:layout_marginTop="10dp"
-        android:text="Low"
+        android:text="@string/low"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -50,7 +51,7 @@
         android:layout_width="125dp"
         android:layout_height="18dp"
         android:layout_marginTop="8dp"
-        android:text="Average"
+        android:text="@string/average"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -75,7 +76,7 @@
         android:layout_width="125dp"
         android:layout_height="20dp"
         android:layout_marginTop="10dp"
-        android:text="High"
+        android:text="@string/high"
         android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -87,7 +88,7 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Projected Damage"
+        android:text="@string/projected_damage"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -95,13 +96,13 @@
         app:layout_constraintHorizontal_bias="0.204"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewServantName"
-        app:layout_constraintVertical_bias="0.075" />
+        app:layout_constraintVertical_bias="0.167" />
 
     <Button
         android:id="@+id/button_Calculate_Damage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Calculate"
+        android:text="@string/calculate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
@@ -131,7 +132,7 @@
         android:layout_width="125sp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="Card Buffs"
+        android:text="@string/card_buffs"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editText_Card_Buff"
         app:layout_constraintEnd_toStartOf="@+id/text_Attack_Buff"
@@ -162,7 +163,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="NP Extra Damage"
+        android:text="@string/np_extra_damage"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editText_SE_Buff"
         app:layout_constraintEnd_toStartOf="@+id/text_DMGPlus_Buff"
@@ -193,7 +194,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="Attack Buffs"
+        android:text="@string/attack_buffs"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editText_Attack_Buff"
         app:layout_constraintEnd_toEndOf="parent"
@@ -224,7 +225,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="NP Damage Buffs"
+        android:text="@string/np_damage_buffs"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editText_NPDamage_Buff"
         app:layout_constraintEnd_toStartOf="@+id/text_Pmod_Buff"
@@ -255,7 +256,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="PowerMod Buffs"
+        android:text="@string/powermod_buffs"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editText_Pmod_Buff"
         app:layout_constraintEnd_toEndOf="parent"
@@ -269,7 +270,7 @@
         android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
-        android:text="Flat Damage Buffs"
+        android:text="@string/flat_damage_buffs"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/editText_DMGPlus_Buff"
         app:layout_constraintEnd_toEndOf="parent"
@@ -293,65 +294,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8" />
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteServantName"
-        android:layout_width="200sp"
-        android:layout_height="24sp"
-        android:background="@null"
-        android:minHeight="48dp"
-        app:layout_constraintBottom_toTopOf="@+id/text_Attack_Buff"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.27"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewServantName"
-        app:layout_constraintVertical_bias="0.053" />
-
     <TextView
         android:id="@+id/textViewServantName"
         android:layout_width="125sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Name"
+        android:text="@string/name"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Spinner
-        android:id="@+id/spinnerLevel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:dropDownWidth="match_parent"
-        android:minHeight="48dp"
-        android:spinnerMode="dropdown"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.594"
-        app:layout_constraintStart_toEndOf="@+id/textViewLevel"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textViewLevel"
-        android:layout_width="30sp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Level"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.226"
-        app:layout_constraintStart_toEndOf="@+id/textViewServantName"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/textViewAttackStat"
         android:layout_width="30sp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:text="ATK"
+        android:layout_marginTop="24dp"
+        android:text="@string/atk"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.271"
+        app:layout_constraintHorizontal_bias="0.301"
         app:layout_constraintStart_toEndOf="@+id/textViewServantName"
         app:layout_constraintTop_toBottomOf="@+id/textViewLevel" />
 
@@ -359,10 +322,69 @@
         android:id="@+id/textViewAtkStat"
         android:layout_width="80sp"
         android:layout_height="21dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.423"
         app:layout_constraintStart_toEndOf="@+id/textViewAttackStat"
         app:layout_constraintTop_toBottomOf="@+id/textViewLevel" />
+
+    <TextView
+        android:id="@+id/textViewLevel"
+        android:layout_width="30sp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/level"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toEndOf="@+id/textViewServantName"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteServantLevel"
+        android:layout_width="52dp"
+        android:layout_height="40sp"
+        android:layout_marginTop="16dp"
+        android:inputType="number"
+        android:text="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.298"
+        app:layout_constraintStart_toEndOf="@+id/textViewLevel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteServantName"
+        android:layout_width="175sp"
+        android:layout_height="24sp"
+        android:background="@null"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/text_Attack_Buff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewServantName"
+        app:layout_constraintVertical_bias="0.053" />
+
+    <TextView
+        android:id="@+id/textViewNPLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="NP Lvl"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.31"
+        app:layout_constraintStart_toEndOf="@+id/textViewServantName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAttackStat" />
+
+    <Spinner
+        android:id="@+id/spinnerNPLevel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize = "20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.209"
+        app:layout_constraintStart_toEndOf="@+id/textViewNPLevel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAttackStat" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

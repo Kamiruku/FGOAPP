@@ -1139,7 +1139,7 @@ class ServantDump : ArrayList<ServantDump.ServantDumpItem>() , Serializable{
             val unmodifiedDetail: String
         ) : Serializable {
             data class Function(
-                val buffs: List<Any>,
+                 val buffs: List<Any>,
                 val funcGroup: List<Any>,
                 val funcId: Int,
                 val funcPopupText: String,

@@ -2,4 +2,18 @@
     <string name="app_name">FGOApp</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="level">Level</string>
+    <string name="atk">ATK</string>
+    <string name="name">Name</string>
+    <string name="low">Low</string>
+    <string name="flat_damage_buffs">Flat Damage Buffs</string>
+    <string name="powermod_buffs">PowerMod Buffs</string>
+    <string name="np_damage_buffs">NP Damage Buffs</string>
+    <string name="attack_buffs">Attack Buffs</string>
+    <string name="np_extra_damage">NP Extra Damage</string>
+    <string name="card_buffs">Card Buffs</string>
+    <string name="calculate">Calculate</string>
+    <string name="projected_damage">Projected Damage</string>
+    <string name="high">High</string>
+    <string name="average">Average</string>
 </resources>
