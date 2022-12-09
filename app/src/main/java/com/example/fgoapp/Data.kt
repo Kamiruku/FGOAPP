@@ -1,9 +1,13 @@
 package com.example.fgoapp
 
+import android.content.Context
+import android.util.Log
+import android.widget.Toast
 import com.google.gson.Gson
+import java.util.logging.Logger
 
 
-class Data {
+class Data{
     fun getServantNames(servantInfo: ServantDump):List<String>{
         val servantNames: MutableList<String> = mutableListOf()
         for (servant in servantInfo){
@@ -27,16 +31,41 @@ class Data {
     }
 
     fun getNPMultiplier(inputName: String, servantInfo: ServantDump): List<ServantDump.ServantDumpItem.NoblePhantasm.Function.Sval>{
+        val placeholderForSupports = ServantDump.ServantDumpItem.NoblePhantasm.Function.Sval(0, 0)
+
         for (servants in servantInfo){
             if (inputName == servants.name){
-                return if (servants.noblePhantasms[0].effectFlags[0] != "support"){
-                    servants.noblePhantasms[servants.noblePhantasms.size - 1].functions[0].svals
-                } else{
-                    emptyList()
+                if (servants.noblePhantasms[servants.noblePhantasms.size - 1].effectFlags[0] != "support"){
+                    for (function in servants.noblePhantasms[servants.noblePhantasms.size - 1].functions){
+                        if (function.funcType == "damageNp"){
+                            return function.svals
+                        }
+                    }
+                }
+                else{
+                    return listOf(placeholderForSupports)
                 }
             }
         }
-
         return emptyList()
+        /*
+        for (servants in servantInfo){
+            if ((inputName == servants.name) and (servants.noblePhantasms[servants.noblePhantasms.size - 1].effectFlags[0] != "support")){
+                Log.d("Cat1", "1")
+                for (functions in servants.noblePhantasms[servants.noblePhantasms.size - 1].functions){
+                    Log.d("Cat2", "2")
+                    if (functions.funcType == "damageNp"){
+                        Log.d("Cat3", "3")
+                        return functions.svals
+                    }
+                }
+            }
+            else if (servants.noblePhantasms[servants.noblePhantasms.size - 1].effectFlags[0] == "support"){
+                Log.d("Cat4", "4")
+                return listOf(placeholderForSupports)
+            }
+        }
+        return emptyList()
+         */
     }
 }

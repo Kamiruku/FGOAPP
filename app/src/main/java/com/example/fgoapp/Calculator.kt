@@ -1,6 +1,7 @@
 package com.example.fgoapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
@@ -17,6 +18,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_calculator)
 
         val data = Data()
+        val placeHolderForSupports = listOf(ServantDump.ServantDumpItem.NoblePhantasm.Function.Sval(0, 0))
 
         //Set up the autocomplete servant name field
         val autoCompleteServantName: AutoCompleteTextView = findViewById(R.id.autoCompleteServantName)
@@ -67,9 +69,10 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             atkGrowth = data.getServantAtk(inputName.trim(), servantInfoValue)
 
             if (atkGrowth.isNotEmpty()){
-                npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue).isNotEmpty()){
+                npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue) != placeHolderForSupports){
                     data.getNPMultiplier(inputName, servantInfoValue)[nPLevel - 1].Value.toDouble() / 1000
-                } else{
+                }
+                else{
                     0.00
                 }
 
@@ -91,9 +94,10 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (atkGrowth.isNotEmpty()){
                     nPLevel = parent.getItemAtPosition(position).toString().trim().toInt()
-                    npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue).isNotEmpty()){
+                    npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue) != placeHolderForSupports){
                         data.getNPMultiplier(inputName, servantInfoValue)[nPLevel - 1].Value.toDouble() / 1000
-                    } else{
+                    }
+                    else{
                         0.00
                     }
                 }
