@@ -23,7 +23,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val adapterAutoCompleteNames: ArrayAdapter<String> =
             ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, servantNames)
 
-        autoCompleteServantName.threshold = 1;
+        autoCompleteServantName.threshold = 1
         autoCompleteServantName.setAdapter(adapterAutoCompleteNames)
         adapterAutoCompleteNames.notifyDataSetChanged()
 
@@ -67,7 +67,12 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             atkGrowth = data.getServantAtk(inputName.trim(), servantInfoValue)
 
             if (atkGrowth.isNotEmpty()){
-                npDamageMultiplier = data.getNPMultiplier(inputName, servantInfoValue)[nPLevel!! - 1].Value.toDouble() / 1000
+                npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue).isNotEmpty()){
+                    data.getNPMultiplier(inputName, servantInfoValue)[nPLevel - 1].Value.toDouble() / 1000
+                } else{
+                    0.00
+                }
+
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble()
                 textViewAtkStat.text = servantAtk.toInt().toString()
             }
@@ -86,7 +91,11 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (atkGrowth.isNotEmpty()){
                     nPLevel = parent.getItemAtPosition(position).toString().trim().toInt()
-                    npDamageMultiplier = data.getNPMultiplier(inputName, servantInfoValue)[nPLevel!! - 1].Value.toDouble() / 1000
+                    npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue).isNotEmpty()){
+                        data.getNPMultiplier(inputName, servantInfoValue)[nPLevel - 1].Value.toDouble() / 1000
+                    } else{
+                        0.00
+                    }
                 }
             }
 
@@ -103,8 +112,8 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val editTextAttackBuffs: EditText = findViewById(R.id.editText_Attack_Buff)
         val editTextNPDamageBuffs: EditText = findViewById(R.id.editText_NPDamage_Buff)
         val editTextPmodBuffs: EditText = findViewById(R.id.editText_Pmod_Buff)
-        var editTextSEBuffs: EditText = findViewById(R.id.editText_SE_Buff)
-        var editTextDMGPlus: EditText = findViewById(R.id.editText_DMGPlus_Buff)
+        val editTextSEBuffs: EditText = findViewById(R.id.editText_SE_Buff)
+        val editTextDMGPlus: EditText = findViewById(R.id.editText_DMGPlus_Buff)
 
         var cardMod:Double
         var atkMod:Double
@@ -126,19 +135,28 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             dmgPlusAdd = editTextToDouble(editTextDMGPlus)
 
             if (atkGrowth.isNotEmpty()){
-                lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-                averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-                highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+                if (npDamageMultiplier != 0.0){
+                    lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+                    averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+                    highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
 
-                textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
-                    .format(lowRollDamage)
-                textAverageRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
-                    .format(averageRollDamage)
-                textHighRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
-                    .format(highRollDamage)
+                    textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
+                        .format(lowRollDamage)
+                    textAverageRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
+                        .format(averageRollDamage)
+                    textHighRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
+                        .format(highRollDamage)
+                }
+                else{
+                    textLowRollDamage.text = "0.00"
+                    textAverageRollDamage.text = "0.00"
+                    textHighRollDamage.text = "0.00"
+
+                    Toast.makeText(this, "You are trying to calculate damage for a support NP.", Toast.LENGTH_LONG).show()
+                }
             }
             else{
-                Toast.makeText(this, "Please select a servant.", Toast.LENGTH_LONG)
+                Toast.makeText(this, "Please select a servant.", Toast.LENGTH_LONG).show()
             }
 
         }
@@ -147,24 +165,24 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
     private fun calculateDamage(servantAtk: Double, npDamageMultiplier: Double, cardMod:Double, randomModifier: Double, atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double,
                                 dmgPlusAdd:Double):Double{
-        var damage:Double
+        val damage:Double
 
-        var firstCardBonus:Double //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
-        var cardDamageValue:Double
-        var classAtkBonus:Double
-        var triangleModifier:Double
-        var attributeModifier:Double
-        var defMod:Double
-        var criticalModifier:Double
-        var extraCardModifier:Double //2 if Extra card in a Brave Chain, 3.5 if Extra card in a Buster/Quick/Arts Brave Chain, 1 if neither
-        var specialDefMod:Double
-        var selfDamageMod:Double
-        var critDamageMod:Double
-        var isCrit:Int //1 if crit, 0 otherwise
-        var isNP:Int //1 if NP attack, 0 otherwise
-        var isSuperEffective:Int //1 if the enemy qualifies (via trait or status), 0 otherwise
-        var selfDmgCutAdd:Double
-        var busterChainMod:Double //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
+        val firstCardBonus:Double //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
+        val cardDamageValue:Double
+        val classAtkBonus:Double
+        val triangleModifier:Double
+        val attributeModifier:Double
+        val defMod:Double
+        val criticalModifier:Double
+        val extraCardModifier:Double //2 if Extra card in a Brave Chain, 3.5 if Extra card in a Buster/Quick/Arts Brave Chain, 1 if neither
+        val specialDefMod:Double
+        val selfDamageMod:Double
+        val critDamageMod:Double
+        val isCrit:Int //1 if crit, 0 otherwise
+        val isNP:Int //1 if NP attack, 0 otherwise
+        val isSuperEffective:Int //1 if the enemy qualifies (via trait or status), 0 otherwise
+        val selfDmgCutAdd:Double
+        val busterChainMod:Double //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
 
         firstCardBonus = 0.00
         cardDamageValue = 0.80

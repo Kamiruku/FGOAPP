@@ -29,7 +29,11 @@ class Data {
     fun getNPMultiplier(inputName: String, servantInfo: ServantDump): List<ServantDump.ServantDumpItem.NoblePhantasm.Function.Sval>{
         for (servants in servantInfo){
             if (inputName == servants.name){
-                return servants.noblePhantasms[1].functions[0].svals
+                return if (servants.noblePhantasms[0].effectFlags[0] != "support"){
+                    servants.noblePhantasms[servants.noblePhantasms.size - 1].functions[0].svals
+                } else{
+                    emptyList()
+                }
             }
         }
 
