@@ -12,7 +12,7 @@ import java.nio.charset.Charset
 class MainActivity : AppCompatActivity() {
     companion object{
         var servantInfoValue: ServantDump = ServantDump()
-        var servantNames: List<String> = emptyList()
+        var servantNames: List<String> = listOf()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -1,7 +1,6 @@
 package com.example.fgoapp
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
@@ -58,6 +57,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var npDamageMultiplier: Double? = null
 
         var inputName: String = "Cat"
+        var servantDetailsList: List<ServantDump.ServantDumpItem> = emptyList()
         var atkGrowth: List<Int> = listOf()
         var selectedLevel: String = "1"
         var servantAtk: Double = 1.0
@@ -66,11 +66,15 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
         autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
             inputName = arg0.getItemAtPosition(arg2).toString()
-            atkGrowth = data.getServantAtk(inputName.trim(), servantInfoValue)
+            servantDetailsList = data.getServantDetail(inputName, servantInfoValue)
+
+            if (servantDetailsList.isNotEmpty()){
+                atkGrowth = servantDetailsList[0].atkGrowth
+            }
 
             if (atkGrowth.isNotEmpty()){
-                npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue) != placeHolderForSupports){
-                    data.getNPMultiplier(inputName, servantInfoValue)[nPLevel - 1].Value.toDouble() / 1000
+                npDamageMultiplier = if (data.getNPMultiplier(servantDetailsList[0]) != placeHolderForSupports){
+                    data.getNPMultiplier(servantDetailsList[0])[nPLevel - 1].Value.toDouble() / 1000
                 }
                 else{
                     0.00
@@ -84,7 +88,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         autoCompleteServantLevel.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
             selectedLevel = arg0.getItemAtPosition(arg2).toString()
 
-            if (atkGrowth.isNotEmpty()) {
+            if (servantDetailsList.isNotEmpty()) {
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble()
                 textViewAtkStat.text = servantAtk.toInt().toString()
             }
@@ -92,10 +96,10 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
         spinnerNPLevel.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
-                if (atkGrowth.isNotEmpty()){
+                if (servantDetailsList.isNotEmpty()){
                     nPLevel = parent.getItemAtPosition(position).toString().trim().toInt()
-                    npDamageMultiplier = if (data.getNPMultiplier(inputName, servantInfoValue) != placeHolderForSupports){
-                        data.getNPMultiplier(inputName, servantInfoValue)[nPLevel - 1].Value.toDouble() / 1000
+                    npDamageMultiplier = if (data.getNPMultiplier(servantDetailsList[0]) != placeHolderForSupports){
+                        data.getNPMultiplier(servantDetailsList[0])[nPLevel - 1].Value.toDouble() / 1000
                     }
                     else{
                         0.00
