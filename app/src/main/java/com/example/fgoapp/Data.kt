@@ -34,38 +34,21 @@ class Data{
         val placeholderForSupports = ServantDump.ServantDumpItem.NoblePhantasm.Function.Sval(0, 0)
 
         for (servants in servantInfo){
-            if (inputName == servants.name){
-                if (servants.noblePhantasms[servants.noblePhantasms.size - 1].effectFlags[0] != "support"){
-                    for (function in servants.noblePhantasms[servants.noblePhantasms.size - 1].functions){
-                        if (function.funcType == "damageNp"){
-                            return function.svals
-                        }
-                    }
-                }
-                else{
-                    return listOf(placeholderForSupports)
-                }
-            }
-        }
-        return emptyList()
-        /*
-        for (servants in servantInfo){
             if ((inputName == servants.name) and (servants.noblePhantasms[servants.noblePhantasms.size - 1].effectFlags[0] != "support")){
-                Log.d("Cat1", "1")
+                Log.d("Cat1", servants.noblePhantasms.size.toString())
                 for (functions in servants.noblePhantasms[servants.noblePhantasms.size - 1].functions){
                     Log.d("Cat2", "2")
-                    if (functions.funcType == "damageNp"){
+                    if (functions.funcType == "damageNp" || functions.funcType == "damageNpIndividual"){
                         Log.d("Cat3", "3")
                         return functions.svals
                     }
                 }
             }
-            else if (servants.noblePhantasms[servants.noblePhantasms.size - 1].effectFlags[0] == "support"){
+            else if ((inputName == servants.name) and (servants.noblePhantasms[servants.noblePhantasms.size - 1].effectFlags[0] == "support")){
                 Log.d("Cat4", "4")
                 return listOf(placeholderForSupports)
             }
         }
         return emptyList()
-         */
     }
 }
