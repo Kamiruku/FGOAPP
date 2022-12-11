@@ -111,15 +111,18 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                     }
                 }
             }
-
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
         val view1: View = findViewById(R.id.view1)
-
         val buttonCalculateDamage : Button = findViewById(R.id.button_Calculate_Damage)
         buttonCalculateDamage.setOnClickListener {
-            showDamage(view1, savedInstanceState, atkGrowth,npDamageMultiplier!!, servantAtk)
+            if (atkGrowth.isNotEmpty()){
+                showDamage(view1, savedInstanceState, atkGrowth,npDamageMultiplier!!, servantAtk)
+            }
+            else if (npDamageMultiplier == null){
+                Toast.makeText(this, "Please select a servant.", Toast.LENGTH_LONG).show()
+            }
         }
     }
     private fun showDamage(view1: View, savedInstanceState: Bundle?, atkGrowth: List<Int>, npDamageMultiplier: Double, servantAtk: Double){
@@ -141,9 +144,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var averageRollDamage:Double
         var highRollDamage:Double
 
-        val frag = CalculatorFragment()
-        val bundle = Bundle()
-
         cardMod = editTextToDouble(editTextCardBuffs) / 100
         atkMod = editTextToDouble(editTextAttackBuffs) / 100
         npDamageMod = editTextToDouble(editTextNPDamageBuffs) / 100
@@ -155,40 +155,33 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
         val fm: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = fm.beginTransaction()
+        val frag = CalculatorFragment()
+        val bundle = Bundle()
 
-        if (atkGrowth.isNotEmpty()){
-            if (npDamageMultiplier != 0.0){
-                lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-                averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-                highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+        if (npDamageMultiplier != 0.0){
+            lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
 
-                val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
+            val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
 
-                if (savedInstanceState == null) {
-                    Log.d("Help me", averageRollDamage.toString())
-                    bundle.putStringArray("DamageBundle", damage)
-                    frag.arguments = bundle
-                    ft.replace(R.id.fragment_container_view, frag)
-                    ft.show(frag)
-                }
-            }
-            else{
-                val damage = arrayOf<String>("0.00", "0.00", "0.00")
-                if (savedInstanceState == null) {
-                    bundle.putStringArray("DamageBundle", damage)
-                    frag.arguments = bundle
-                    ft.replace(R.id.fragment_container_view, frag)
-                    ft.show(frag)
-                }
-
-                Toast.makeText(this, "You are trying to calculate damage for a support NP.", Toast.LENGTH_LONG).show()
-            }
-            ft.addToBackStack(null)
-            ft.commit()
+            Log.d("Help me", averageRollDamage.toString())
+            bundle.putStringArray("DamageBundle", damage)
+            frag.arguments = bundle
+            ft.replace(R.id.fragment_container_view, frag)
+            ft.show(frag)
         }
         else{
-            Toast.makeText(this, "Please select a servant.", Toast.LENGTH_LONG).show()
+            /* val damage = arrayOf<String>("0.00", "0.00", "0.00")
+            bundle.putStringArray("DamageBundle", damage)
+            frag.arguments = bundle
+            ft.replace(R.id.fragment_container_view, frag)
+            ft.show(frag) */
+            Toast.makeText(this, "You are trying to calculate damage for a support NP.", Toast.LENGTH_LONG).show()
         }
+
+        ft.addToBackStack(null)
+        ft.commit()
 
         view1.setOnClickListener{ view ->
             val fm: FragmentManager = supportFragmentManager

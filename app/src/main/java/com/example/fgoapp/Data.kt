@@ -15,7 +15,7 @@ class Data{
                 servantNames.add(servant.name)
             }
             else{
-                servantNames.add(servant.name + "\u2007" + "(${servant.className.replaceFirstChar { it.uppercase() }})")
+                servantNames.add(servant.name + "\u00a0" + "(${servant.className.replaceFirstChar { it.uppercase() }})")
             }
         }
         return servantNames
@@ -25,7 +25,7 @@ class Data{
     }
 
     fun getServantDetail(inputName: String, servantInfo: ServantDump): List<ServantDump.ServantDumpItem>{
-        val details = inputName.trim().split("\u2007")
+        val details = inputName.trim().split("\u00a0")
 
         for (servants in servantInfo){
             if ((details.size == 1) and (details[0].trim() == servants.name)){

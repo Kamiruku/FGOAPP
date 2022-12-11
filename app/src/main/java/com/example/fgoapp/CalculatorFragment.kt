@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import java.text.NumberFormat
+import java.util.*
 
 class CalculatorFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -22,9 +24,9 @@ class CalculatorFragment : Fragment() {
 
         if (arguments != null){
             val damage = requireArguments().getStringArray("DamageBundle")
-            textLowRollDamage.text = damage?.get(0)?.toString()
-            textAverageRollDamage.text = damage?.get(1)?.toString()
-            textHighRollDamage.text = damage?.get(2)?.toString()
+            textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(0)?.toDouble())
+            textAverageRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(1)?.toDouble())
+            textHighRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(2)?.toDouble())
         }
         return view
     }
