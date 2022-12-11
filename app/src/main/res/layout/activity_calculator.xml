@@ -8,83 +8,6 @@
     tools:context=".Calculator">
 
     <TextView
-        android:id="@+id/text_Damage_Low_Roll"
-        android:layout_width="125dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/my_border"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_Low_Roll_Label" />
-
-    <TextView
-        android:id="@+id/text_Damage_Low_Roll_Label"
-        android:layout_width="125dp"
-        android:layout_height="18sp"
-        android:layout_marginTop="10dp"
-        android:text="@string/low"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
-        android:id="@+id/text_Damage_Average_Roll"
-        android:layout_width="125dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/my_border"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_Average_Roll_Label" />
-
-    <TextView
-        android:id="@+id/text_Damage_Average_Roll_Label"
-        android:layout_width="125dp"
-        android:layout_height="18dp"
-        android:layout_marginTop="8dp"
-        android:text="@string/average"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5" />
-
-    <TextView
-        android:id="@+id/text_Damage_High_Roll"
-        android:layout_width="125dp"
-        android:layout_height="24dp"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/my_border"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_High_Roll_Label" />
-
-    <TextView
-        android:id="@+id/text_Damage_High_Roll_Label"
-        android:layout_width="125dp"
-        android:layout_height="20dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/high"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_Low_Roll" />
-
-    <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -123,9 +46,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editText_NPDamage_Buff"
         app:layout_constraintEnd_toStartOf="@+id/editText_Attack_Buff"
         app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_High_Roll"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/text_Card_Buffs"
@@ -137,9 +58,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editText_Card_Buff"
         app:layout_constraintEnd_toStartOf="@+id/text_Attack_Buff"
         app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_High_Roll"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editText_SE_Buff"
@@ -185,9 +104,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editText_Pmod_Buff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_High_Roll"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/text_Attack_Buff"
@@ -199,9 +116,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editText_Attack_Buff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_Damage_High_Roll"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/editText_NPDamage_Buff"
@@ -386,5 +301,26 @@
         app:layout_constraintHorizontal_bias="0.209"
         app:layout_constraintStart_toEndOf="@+id/textViewNPLevel"
         app:layout_constraintTop_toBottomOf="@+id/textViewAttackStat" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:layout_width="338dp"
+        android:layout_height="347dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.385"
+        tools:layout="@layout/fragment_calculator" />
+
+    <View
+        android:id="@+id/view1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

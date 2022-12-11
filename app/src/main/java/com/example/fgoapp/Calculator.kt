@@ -1,13 +1,18 @@
 package com.example.fgoapp
 
+import android.graphics.Rect
+import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.*
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.*
 import com.example.fgoapp.MainActivity.Companion.servantInfoValue
 import com.example.fgoapp.MainActivity.Companion.servantNames
-import java.text.NumberFormat
 import java.util.*
 
 
@@ -110,12 +115,14 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        val view1: View = findViewById(R.id.view1)
+
         val buttonCalculateDamage : Button = findViewById(R.id.button_Calculate_Damage)
-
-        val textLowRollDamage: TextView = findViewById(R.id.text_Damage_Low_Roll)
-        val textAverageRollDamage: TextView = findViewById(R.id.text_Damage_Average_Roll)
-        val textHighRollDamage: TextView = findViewById(R.id.text_Damage_High_Roll)
-
+        buttonCalculateDamage.setOnClickListener {
+            showDamage(view1, savedInstanceState, atkGrowth,npDamageMultiplier!!, servantAtk)
+        }
+    }
+    private fun showDamage(view1: View, savedInstanceState: Bundle?, atkGrowth: List<Int>, npDamageMultiplier: Double, servantAtk: Double){
         val editTextCardBuffs: EditText = findViewById(R.id.editText_Card_Buff)
         val editTextAttackBuffs: EditText = findViewById(R.id.editText_Attack_Buff)
         val editTextNPDamageBuffs: EditText = findViewById(R.id.editText_NPDamage_Buff)
@@ -134,80 +141,82 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var averageRollDamage:Double
         var highRollDamage:Double
 
-        buttonCalculateDamage.setOnClickListener{
-            cardMod = editTextToDouble(editTextCardBuffs) / 100
-            atkMod = editTextToDouble(editTextAttackBuffs) / 100
-            npDamageMod = editTextToDouble(editTextNPDamageBuffs) / 100
-            powerMod = editTextToDouble(editTextPmodBuffs) / 100
-            superEffectiveModifier = editTextToDouble(editTextSEBuffs) / 100
-            dmgPlusAdd = editTextToDouble(editTextDMGPlus)
+        val frag = CalculatorFragment()
+        val bundle = Bundle()
 
-            if (atkGrowth.isNotEmpty()){
-                if (npDamageMultiplier != 0.0){
-                    lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-                    averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-                    highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+        cardMod = editTextToDouble(editTextCardBuffs) / 100
+        atkMod = editTextToDouble(editTextAttackBuffs) / 100
+        npDamageMod = editTextToDouble(editTextNPDamageBuffs) / 100
+        powerMod = editTextToDouble(editTextPmodBuffs) / 100
+        superEffectiveModifier = editTextToDouble(editTextSEBuffs) / 100
+        dmgPlusAdd = editTextToDouble(editTextDMGPlus)
 
-                    textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
-                        .format(lowRollDamage)
-                    textAverageRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
-                        .format(averageRollDamage)
-                    textHighRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US)
-                        .format(highRollDamage)
-                }
-                else{
-                    textLowRollDamage.text = "0.00"
-                    textAverageRollDamage.text = "0.00"
-                    textHighRollDamage.text = "0.00"
+        view1.visibility = VISIBLE
 
-                    Toast.makeText(this, "You are trying to calculate damage for a support NP.", Toast.LENGTH_LONG).show()
+        val fm: FragmentManager = supportFragmentManager
+        val ft: FragmentTransaction = fm.beginTransaction()
+
+        if (atkGrowth.isNotEmpty()){
+            if (npDamageMultiplier != 0.0){
+                lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+                averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+                highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+
+                val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
+
+                if (savedInstanceState == null) {
+                    Log.d("Help me", averageRollDamage.toString())
+                    bundle.putStringArray("DamageBundle", damage)
+                    frag.arguments = bundle
+                    ft.replace(R.id.fragment_container_view, frag)
+                    ft.show(frag)
                 }
             }
             else{
-                Toast.makeText(this, "Please select a servant.", Toast.LENGTH_LONG).show()
-            }
+                val damage = arrayOf<String>("0.00", "0.00", "0.00")
+                if (savedInstanceState == null) {
+                    bundle.putStringArray("DamageBundle", damage)
+                    frag.arguments = bundle
+                    ft.replace(R.id.fragment_container_view, frag)
+                    ft.show(frag)
+                }
 
+                Toast.makeText(this, "You are trying to calculate damage for a support NP.", Toast.LENGTH_LONG).show()
+            }
+            ft.addToBackStack(null)
+            ft.commit()
+        }
+        else{
+            Toast.makeText(this, "Please select a servant.", Toast.LENGTH_LONG).show()
         }
 
+        view1.setOnClickListener{ view ->
+            val fm: FragmentManager = supportFragmentManager
+            val ft: FragmentTransaction = fm.beginTransaction()
+            ft.hide(frag)
+            ft.commit()
+            view1.visibility = INVISIBLE
+        }
     }
 
-    private fun calculateDamage(servantAtk: Double, npDamageMultiplier: Double, cardMod:Double, randomModifier: Double, atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double,
-                                dmgPlusAdd:Double):Double{
-        val damage:Double
+    private fun calculateDamage(servantAtk: Double, npDamageMultiplier: Double, cardMod:Double, randomModifier: Double, atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double, dmgPlusAdd:Double):Double{ val damage:Double
 
-        val firstCardBonus:Double //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
-        val cardDamageValue:Double
-        val classAtkBonus:Double
-        val triangleModifier:Double
-        val attributeModifier:Double
-        val defMod:Double
-        val criticalModifier:Double
-        val extraCardModifier:Double //2 if Extra card in a Brave Chain, 3.5 if Extra card in a Buster/Quick/Arts Brave Chain, 1 if neither
-        val specialDefMod:Double
-        val selfDamageMod:Double
-        val critDamageMod:Double
-        val isCrit:Int //1 if crit, 0 otherwise
-        val isNP:Int //1 if NP attack, 0 otherwise
-        val isSuperEffective:Int //1 if the enemy qualifies (via trait or status), 0 otherwise
-        val selfDmgCutAdd:Double
-        val busterChainMod:Double //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
-
-        firstCardBonus = 0.00
-        cardDamageValue = 0.80
-        classAtkBonus = 1.10
-        triangleModifier = 1.00
-        attributeModifier = 1.00
-        defMod = 0.0
-        criticalModifier = 1.00
-        extraCardModifier = 1.00
-        specialDefMod = 0.00
-        selfDamageMod = 0.00
-        critDamageMod = 0.00
-        isCrit = 0
-        isNP = 1
-        isSuperEffective = 0
-        selfDmgCutAdd = 0.00
-        busterChainMod = 0.00
+        val firstCardBonus:Double = 0.00 //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
+        val cardDamageValue:Double = 0.80
+        val classAtkBonus:Double = 1.10
+        val triangleModifier:Double = 1.00
+        val attributeModifier:Double = 1.00
+        val defMod:Double = 0.0
+        val criticalModifier:Double = 1.00
+        val extraCardModifier:Double = 1.00 //2 if Extra card in a Brave Chain, 3.5 if Extra card in a Buster/Quick/Arts Brave Chain, 1 if neither
+        val specialDefMod:Double = 0.00
+        val selfDamageMod:Double = 0.00
+        val critDamageMod:Double = 0.00
+        val isCrit:Int = 0 //1 if crit, 0 otherwise
+        val isNP:Int = 1 //1 if NP attack, 0 otherwise
+        val isSuperEffective:Int = 0 //1 if the enemy qualifies (via trait or status), 0 otherwise
+        val selfDmgCutAdd:Double = 0.00
+        val busterChainMod:Double = 0.00 //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
 
         damage = (servantAtk * npDamageMultiplier *  (firstCardBonus + (cardDamageValue * (1 + cardMod))) * classAtkBonus *
                 triangleModifier * attributeModifier * randomModifier * 0.23 * (1 + atkMod - defMod) * criticalModifier *
