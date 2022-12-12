@@ -1,23 +1,18 @@
 package com.example.fgoapp
 
-import android.graphics.Color
-import android.graphics.Rect
-import android.opengl.Visibility
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.*
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.*
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
 import com.example.fgoapp.MainActivity.Companion.servantInfoValue
 import com.example.fgoapp.MainActivity.Companion.servantNames
-import java.util.*
-
 
 class Calculator : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,13 +63,13 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var servantDetailsList: List<ServantDump.ServantDumpItem> = emptyList()
         var atkGrowth: List<Int> = listOf()
         var selectedLevel: String = "1"
-        var servantAtk: Double = 1.0
+        var servantAtk: Double
 
         val textViewAtkStat: TextView = findViewById(R.id.textViewAtkStat)
         val editTextFou: EditText = findViewById(R.id.editTextFou)
         var fou: Double
 
-        autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
+        autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, _, arg2, _ ->
             inputName = arg0.getItemAtPosition(arg2).toString()
             servantDetailsList = data.getServantDetail(inputName, servantInfoValue)
 
@@ -92,17 +87,17 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
                 fou = fouCheck(editTextFou)
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
-                textViewAtkStat.text = " " + servantAtk.toInt().toString()
+                textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
             }
         }
 
-        autoCompleteServantLevel.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
+        autoCompleteServantLevel.onItemClickListener = OnItemClickListener { arg0, _, arg2, _ ->
             selectedLevel = arg0.getItemAtPosition(arg2).toString()
 
             if (servantDetailsList.isNotEmpty()) {
                 fou = fouCheck(editTextFou)
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
-                textViewAtkStat.text = " " + servantAtk.toInt().toString()
+                textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
             }
         }
 
@@ -126,7 +121,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                 if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
                     fou = fouCheck(editTextFou)
                     servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
-                    textViewAtkStat.text = servantAtk.toInt().toString()
+                    textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
                 }
             }
 
@@ -135,24 +130,27 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
+        //Initialised here so it can be used in and out of show damage method
         val view1: View = findViewById(R.id.view1)
         view1.visibility = INVISIBLE
-        var fragmentView: View = findViewById(R.id.fragment_container_view)
+        val fragmentView: View = findViewById(R.id.fragment_container_view)
         fragmentView.visibility = INVISIBLE
+
         val buttonCalculateDamage : Button = findViewById(R.id.button_Calculate_Damage)
         buttonCalculateDamage.setOnClickListener {
-            if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
-                fou = fouCheck(editTextFou)
-                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
-                textViewAtkStat.text = " " + servantAtk.toInt().toString()
-                showDamage(fragmentView, view1, savedInstanceState, atkGrowth,npDamageMultiplier!!, servantAtk)
+            if (servantDetailsList.isNotEmpty()) {
+                fou = fouCheck(editTextFou) //empty string or >2000 check
+                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou //reupdates servant atk and use it
+                textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
+                showDamage(fragmentView, view1,npDamageMultiplier!!, servantAtk)
             }
-            else if (npDamageMultiplier == null){
+            else{
+                //only occurs if user does not click anything from the suggestion box
                 Toast.makeText(this, "Please select a servant from the suggestion box.", Toast.LENGTH_LONG).show()
             }
         }
     }
-    private fun showDamage(fragmentView: View, view1: View, savedInstanceState: Bundle?, atkGrowth: List<Int>, npDamageMultiplier: Double, servantAtk: Double){
+    private fun showDamage(fragmentView: View, view1: View, npDamageMultiplier: Double, servantAtk: Double){
         val editTextCardBuffs: EditText = findViewById(R.id.editText_Card_Buff)
         val editTextAttackBuffs: EditText = findViewById(R.id.editText_Attack_Buff)
         val editTextNPDamageBuffs: EditText = findViewById(R.id.editText_NPDamage_Buff)
@@ -160,16 +158,16 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val editTextSEBuffs: EditText = findViewById(R.id.editText_SE_Buff)
         val editTextDMGPlus: EditText = findViewById(R.id.editText_DMGPlus_Buff)
 
-        var lowRollDamage:Double
-        var averageRollDamage:Double
-        var highRollDamage:Double
+        val lowRollDamage:Double
+        val averageRollDamage:Double
+        val highRollDamage:Double
 
-        var cardMod:Double = editTextToDouble(editTextCardBuffs) / 100
-        var atkMod:Double = editTextToDouble(editTextAttackBuffs) / 100
-        var npDamageMod:Double = editTextToDouble(editTextNPDamageBuffs) / 100
-        var powerMod:Double = editTextToDouble(editTextPmodBuffs) / 100
-        var superEffectiveModifier:Double = editTextToDouble(editTextSEBuffs) / 100
-        var dmgPlusAdd:Double = editTextToDouble(editTextDMGPlus)
+        val cardMod:Double = editTextToDouble(editTextCardBuffs) / 100
+        val atkMod:Double = editTextToDouble(editTextAttackBuffs) / 100
+        val npDamageMod:Double = editTextToDouble(editTextNPDamageBuffs) / 100
+        val powerMod:Double = editTextToDouble(editTextPmodBuffs) / 100
+        val superEffectiveModifier:Double = editTextToDouble(editTextSEBuffs) / 100
+        val dmgPlusAdd:Double = editTextToDouble(editTextDMGPlus)
 
         val fm: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = fm.beginTransaction()
@@ -177,9 +175,9 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val bundle = Bundle()
 
         if (npDamageMultiplier != 0.0){
-            lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            highRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)
@@ -241,7 +239,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun editTextToDouble(input: EditText):Double{
-        var output = input.text.toString().trim()
+        val output = input.text.toString().trim()
 
         return if (output.isEmpty()){
             0.00

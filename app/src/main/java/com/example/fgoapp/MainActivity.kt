@@ -1,10 +1,10 @@
 package com.example.fgoapp
 
-import android.app.Application
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import java.io.IOException
 import java.nio.charset.Charset
 
@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
         val data = Data()
         servantInfoValue = data.getServantInfo(getJsonFromAssets())
         servantNames = data.getServantNames(servantInfoValue)
@@ -29,9 +31,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun getJsonFromAssets(): String? {
-        var json: String?
-        var charset: Charset = Charsets.UTF_8
+    private fun getJsonFromAssets(): String? {
+        val json: String?
+        val charset: Charset = Charsets.UTF_8
         try {
             val jsonFile = assets.open("nice_servant.json")
             val size = jsonFile.available()

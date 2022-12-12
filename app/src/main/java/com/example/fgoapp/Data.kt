@@ -1,9 +1,6 @@
 package com.example.fgoapp
 
-import android.util.Log
-import android.widget.Toast
 import com.google.gson.Gson
-import java.util.logging.Logger
 
 
 class Data{

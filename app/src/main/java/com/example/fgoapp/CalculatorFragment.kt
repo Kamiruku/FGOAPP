@@ -1,14 +1,13 @@
 package com.example.fgoapp
 
-import android.app.Activity
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import java.text.NumberFormat
 import java.util.*
 
@@ -29,9 +28,9 @@ class CalculatorFragment : Fragment() {
 
         if (arguments != null){
             val damage = requireArguments().getStringArray("DamageBundle")
-            textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(0)?.toDouble())
-            textAverageRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(1)?.toDouble())
-            textHighRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(2)?.toDouble())
+            textLowRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(0)?.toDouble()))
+            textAverageRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(1)?.toDouble()))
+            textHighRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(2)?.toDouble()))
         }
         return view
     }
