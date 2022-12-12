@@ -14,16 +14,30 @@
 
         <ImageView
             android:id="@+id/imageView"
-            android:layout_width="341dp"
-            android:layout_height="470dp"
+            android:layout_width="350dp"
+            android:layout_height="210dp"
+            android:background="@color/purple_200"
             android:src="@android:drawable/screen_background_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.363"
-            app:srcCompat="@drawable/ic_launcher_background" />
+            app:layout_constraintVertical_bias="0.306"
+            app:srcCompat="@color/purple_500" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/projected_damage"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/text_Damage_Low_Roll_Label_Fragment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/text_Damage_Low_Roll_Fragment"
@@ -43,7 +57,7 @@
             android:layout_width="125dp"
             android:layout_height="24sp"
             android:layout_marginTop="10dp"
-            android:text="@string/low"
+            android:text=" Low"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,7 +86,7 @@
             android:layout_width="125dp"
             android:layout_height="24sp"
             android:layout_marginTop="25dp"
-            android:text="@string/average"
+            android:text=" Average"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -101,7 +115,7 @@
             android:layout_width="125dp"
             android:layout_height="24sp"
             android:layout_marginTop="25dp"
-            android:text="@string/high"
+            android:text=" High"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

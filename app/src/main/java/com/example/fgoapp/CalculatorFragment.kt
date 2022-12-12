@@ -1,11 +1,13 @@
 package com.example.fgoapp
 
 import android.app.Activity
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import java.text.NumberFormat
 import java.util.*
@@ -22,6 +24,9 @@ class CalculatorFragment : Fragment() {
         val textAverageRollDamage: TextView = view.findViewById(R.id.text_Damage_Average_Roll_Fragment)
         val textHighRollDamage: TextView = view.findViewById(R.id.text_Damage_High_Roll_Fragment)
 
+        val imageView: ImageView = view.findViewById(R.id.imageView)
+        imageView.setBackgroundColor(Color.rgb(81, 45, 128))
+
         if (arguments != null){
             val damage = requireArguments().getStringArray("DamageBundle")
             textLowRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(0)?.toDouble())
@@ -29,9 +34,5 @@ class CalculatorFragment : Fragment() {
             textHighRollDamage.text = " " + NumberFormat.getNumberInstance(Locale.US).format(damage?.get(2)?.toDouble())
         }
         return view
-    }
-
-    override fun onAttach(activity: Activity){
-        super.onAttach(activity)
     }
 }

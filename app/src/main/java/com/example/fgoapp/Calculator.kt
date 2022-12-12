@@ -1,5 +1,6 @@
 package com.example.fgoapp
 
+import android.graphics.Color
 import android.graphics.Rect
 import android.opengl.Visibility
 import android.os.Bundle
@@ -86,7 +87,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                 }
 
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble()
-                textViewAtkStat.text = servantAtk.toInt().toString()
+                textViewAtkStat.text = " " + servantAtk.toInt().toString()
             }
         }
 
@@ -95,7 +96,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
             if (servantDetailsList.isNotEmpty()) {
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble()
-                textViewAtkStat.text = servantAtk.toInt().toString()
+                textViewAtkStat.text = " " + servantAtk.toInt().toString()
             }
         }
 
@@ -115,17 +116,20 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         }
 
         val view1: View = findViewById(R.id.view1)
+        view1.visibility = INVISIBLE
+        var fragmentView: View = findViewById(R.id.fragment_container_view)
+        fragmentView.visibility = INVISIBLE
         val buttonCalculateDamage : Button = findViewById(R.id.button_Calculate_Damage)
         buttonCalculateDamage.setOnClickListener {
             if (atkGrowth.isNotEmpty()){
-                showDamage(view1, savedInstanceState, atkGrowth,npDamageMultiplier!!, servantAtk)
+                showDamage(fragmentView, view1, savedInstanceState, atkGrowth,npDamageMultiplier!!, servantAtk)
             }
             else if (npDamageMultiplier == null){
-                Toast.makeText(this, "Please select a servant.", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Please select a servant from the suggestion box.", Toast.LENGTH_LONG).show()
             }
         }
     }
-    private fun showDamage(view1: View, savedInstanceState: Bundle?, atkGrowth: List<Int>, npDamageMultiplier: Double, servantAtk: Double){
+    private fun showDamage(fragmentView: View, view1: View, savedInstanceState: Bundle?, atkGrowth: List<Int>, npDamageMultiplier: Double, servantAtk: Double){
         val editTextCardBuffs: EditText = findViewById(R.id.editText_Card_Buff)
         val editTextAttackBuffs: EditText = findViewById(R.id.editText_Attack_Buff)
         val editTextNPDamageBuffs: EditText = findViewById(R.id.editText_NPDamage_Buff)
@@ -133,25 +137,16 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val editTextSEBuffs: EditText = findViewById(R.id.editText_SE_Buff)
         val editTextDMGPlus: EditText = findViewById(R.id.editText_DMGPlus_Buff)
 
-        var cardMod:Double
-        var atkMod:Double
-        var npDamageMod:Double
-        var powerMod:Double
-        var superEffectiveModifier:Double
-        var dmgPlusAdd:Double
-
         var lowRollDamage:Double
         var averageRollDamage:Double
         var highRollDamage:Double
 
-        cardMod = editTextToDouble(editTextCardBuffs) / 100
-        atkMod = editTextToDouble(editTextAttackBuffs) / 100
-        npDamageMod = editTextToDouble(editTextNPDamageBuffs) / 100
-        powerMod = editTextToDouble(editTextPmodBuffs) / 100
-        superEffectiveModifier = editTextToDouble(editTextSEBuffs) / 100
-        dmgPlusAdd = editTextToDouble(editTextDMGPlus)
-
-        view1.visibility = VISIBLE
+        var cardMod:Double = editTextToDouble(editTextCardBuffs) / 100
+        var atkMod:Double = editTextToDouble(editTextAttackBuffs) / 100
+        var npDamageMod:Double = editTextToDouble(editTextNPDamageBuffs) / 100
+        var powerMod:Double = editTextToDouble(editTextPmodBuffs) / 100
+        var superEffectiveModifier:Double = editTextToDouble(editTextSEBuffs) / 100
+        var dmgPlusAdd:Double = editTextToDouble(editTextDMGPlus)
 
         val fm: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = fm.beginTransaction()
@@ -164,8 +159,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             highRollDamage = calculateDamage(servantAtk, npDamageMultiplier!!, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
-
-            Log.d("Help me", averageRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)
             frag.arguments = bundle
             ft.replace(R.id.fragment_container_view, frag)
@@ -179,16 +172,14 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             ft.show(frag) */
             Toast.makeText(this, "You are trying to calculate damage for a support NP.", Toast.LENGTH_LONG).show()
         }
-
         ft.addToBackStack(null)
         ft.commit()
+        view1.visibility = VISIBLE
+        fragmentView.visibility = VISIBLE
 
-        view1.setOnClickListener{ view ->
-            val fm: FragmentManager = supportFragmentManager
-            val ft: FragmentTransaction = fm.beginTransaction()
-            ft.hide(frag)
-            ft.commit()
+        view1.setOnClickListener{
             view1.visibility = INVISIBLE
+            fragmentView.visibility = INVISIBLE
         }
     }
 
