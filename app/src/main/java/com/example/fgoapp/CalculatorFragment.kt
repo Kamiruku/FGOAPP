@@ -19,6 +19,7 @@ class CalculatorFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_calculator, container, false)
+
         val textLowRollDamage: TextView = view.findViewById(R.id.text_Damage_Low_Roll_Fragment)
         val textAverageRollDamage: TextView = view.findViewById(R.id.text_Damage_Average_Roll_Fragment)
         val textHighRollDamage: TextView = view.findViewById(R.id.text_Damage_High_Roll_Fragment)
