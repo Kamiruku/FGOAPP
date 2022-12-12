@@ -228,7 +228,7 @@
 
     <TextView
         android:id="@+id/textViewAtkStat"
-        android:layout_width="45sp"
+        android:layout_width="50sp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
@@ -302,7 +302,7 @@
         android:id="@+id/spinnerNPLevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="40dp"
         android:textSize="20sp"
         app:layout_constraintBottom_toTopOf="@+id/text_Card_Buffs"
@@ -310,6 +310,38 @@
         app:layout_constraintHorizontal_bias="0.016"
         app:layout_constraintStart_toEndOf="@+id/textViewNPLevel"
         app:layout_constraintTop_toBottomOf="@+id/textViewLevel"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/textViewFou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/my_border"
+        android:text=" Fous "
+        app:layout_constraintBottom_toTopOf="@+id/text_Attack_Buff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/autoCompleteServantLevel"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAttackStat"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <EditText
+        android:id="@+id/editTextFou"
+        android:layout_width="55sp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:inputType="numberSigned"
+        android:text="1000"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/text_Attack_Buff"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/textViewFou"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAtkStat"
         app:layout_constraintVertical_bias="0.0" />
 
     <View
@@ -322,7 +354,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_view"

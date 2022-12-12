@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.graphics.Rect
 import android.opengl.Visibility
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
@@ -62,13 +64,15 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var nPLevel: Int = 1
         var npDamageMultiplier: Double? = null
 
-        var inputName: String = "Cat"
+        var inputName: String
         var servantDetailsList: List<ServantDump.ServantDumpItem> = emptyList()
         var atkGrowth: List<Int> = listOf()
         var selectedLevel: String = "1"
         var servantAtk: Double = 1.0
 
         val textViewAtkStat: TextView = findViewById(R.id.textViewAtkStat)
+        val editTextFou: EditText = findViewById(R.id.editTextFou)
+        var fou: Double
 
         autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, arg1, arg2, arg3 ->
             inputName = arg0.getItemAtPosition(arg2).toString()
@@ -86,7 +90,8 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                     0.00
                 }
 
-                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble()
+                fou = fouCheck(editTextFou)
+                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
                 textViewAtkStat.text = " " + servantAtk.toInt().toString()
             }
         }
@@ -95,7 +100,8 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             selectedLevel = arg0.getItemAtPosition(arg2).toString()
 
             if (servantDetailsList.isNotEmpty()) {
-                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble()
+                fou = fouCheck(editTextFou)
+                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
                 textViewAtkStat.text = " " + servantAtk.toInt().toString()
             }
         }
@@ -115,13 +121,30 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
 
+        editTextFou.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
+                    fou = fouCheck(editTextFou)
+                    servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
+                    textViewAtkStat.text = servantAtk.toInt().toString()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
         val view1: View = findViewById(R.id.view1)
         view1.visibility = INVISIBLE
         var fragmentView: View = findViewById(R.id.fragment_container_view)
         fragmentView.visibility = INVISIBLE
         val buttonCalculateDamage : Button = findViewById(R.id.button_Calculate_Damage)
         buttonCalculateDamage.setOnClickListener {
-            if (atkGrowth.isNotEmpty()){
+            if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
+                fou = fouCheck(editTextFou)
+                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
+                textViewAtkStat.text = " " + servantAtk.toInt().toString()
                 showDamage(fragmentView, view1, savedInstanceState, atkGrowth,npDamageMultiplier!!, servantAtk)
             }
             else if (npDamageMultiplier == null){
@@ -224,6 +247,19 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             0.00
         } else{
             output.toDouble()
+        }
+    }
+
+    private fun fouCheck(input: EditText): Double{
+        val output = input.text.toString()
+        return if (output.isEmpty()){
+            0.00
+        } else{
+            if (output.toDouble() > 2000){
+                2000.00
+            } else{
+                output.toDouble()
+            }
         }
     }
 
