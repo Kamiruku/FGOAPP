@@ -261,27 +261,27 @@
 
     <TextView
         android:id="@+id/textViewServantName"
-        android:layout_width="275sp"
+        android:layout_width="250sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:text="@string/name"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/fragment_container_view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteServantName"
-        android:layout_width="275sp"
+        android:layout_width="250sp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:minHeight="48dp"
         app:layout_constraintBottom_toTopOf="@+id/text_Attack_Buff"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.35"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewServantName"
         app:layout_constraintVertical_bias="0.0" />
@@ -347,30 +347,17 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewAtkStat"
         app:layout_constraintVertical_bias="0.0" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container_view"
-        android:layout_width="350dp"
-        android:layout_height="210dp"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.38"
-        tools:layout="@layout/fragment_calculator" />
-
     <ImageView
         android:id="@+id/imageViewClassIcon"
         android:layout_width="48sp"
         android:layout_height="48sp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="45dp"
         app:layout_constraintBottom_toTopOf="@+id/text_Attack_Buff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/autoCompleteServantName"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_launcher_background" />
+        app:srcCompat="@drawable/my_border" />
 
     <View
         android:id="@+id/view1"
@@ -383,5 +370,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view"
+        android:layout_width="350dp"
+        android:layout_height="210dp"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.38"
+        tools:layout="@layout/fragment_calculator" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

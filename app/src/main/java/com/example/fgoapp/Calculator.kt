@@ -86,9 +86,9 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             servantRarity = servantDetailsList[0].rarity
 
             when(servantRarity){
-                1 - 2 -> servantRarityColour = "bronze"
+                1, 2 -> servantRarityColour = "bronze"
                 3 -> servantRarityColour = "silver"
-                4 - 5 -> servantRarityColour = "gold"
+                4, 5 -> servantRarityColour = "gold"
                 else -> servantRarityColour = "silver"
             }
 
