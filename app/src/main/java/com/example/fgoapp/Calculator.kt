@@ -107,6 +107,10 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                 else{ 0.00 }
 
                 fou = fouCheck(editTextFou)
+                if (autoCompleteServantLevel.text.isNotEmpty()){
+                    selectedLevel = autoCompleteServantLevel.text.toString()
+                }
+
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
                 textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
             }
@@ -125,13 +129,17 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         autoCompleteServantLevel.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
-                    if (autoCompleteServantLevel.text.toString().toInt() > 120){
+                    if (autoCompleteServantLevel.text.isNotEmpty() && autoCompleteServantLevel.text.toString().toInt() > 120){
                         autoCompleteServantLevel.setText("120")
                         selectedLevel = "120"
                     }
-                    else{
+                    else if (autoCompleteServantLevel.text.isNotEmpty()){
                         selectedLevel = autoCompleteServantLevel.text.toString()
                     }
+                    else{
+                        selectedLevel = "1"
+                    }
+
                     fou = fouCheck(editTextFou)
                     servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
                     textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
@@ -357,6 +365,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             0.00
         } else{
             if (output.toDouble() > 2000){
+                input.setText("2000")
                 2000.00
             } else{
                 output.toDouble()
