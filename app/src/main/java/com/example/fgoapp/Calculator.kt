@@ -99,6 +99,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             imageViewClassIcon.setImageBitmap(classIcon)
 
             atkGrowth = servantDetailsList[0].atkGrowth
+            fou = fouCheck(editTextFou)
 
             if (atkGrowth.isNotEmpty()){
                 npDamageMultiplier = if (data.getNPMultiplier(servantDetailsList[0]) != placeHolderForSupports){
@@ -106,7 +107,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                 }
                 else{ 0.00 }
 
-                fou = fouCheck(editTextFou)
                 if (autoCompleteServantLevel.text.isNotEmpty()){
                     selectedLevel = autoCompleteServantLevel.text.toString()
                 }
@@ -153,8 +153,9 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
         spinnerNPLevel.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
+                nPLevel = parent.getItemAtPosition(position).toString().trim().toInt()
+
                 if (servantDetailsList.isNotEmpty()){
-                    nPLevel = parent.getItemAtPosition(position).toString().trim().toInt()
                     npDamageMultiplier = if (data.getNPMultiplier(servantDetailsList[0]) != placeHolderForSupports){
                         data.getNPMultiplier(servantDetailsList[0])[nPLevel - 1].Value.toDouble() / 1000
                     }
@@ -166,8 +167,8 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
         editTextFou.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
+                fou = fouCheck(editTextFou)
                 if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
-                    fou = fouCheck(editTextFou)
                     servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
                     textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
                 }
