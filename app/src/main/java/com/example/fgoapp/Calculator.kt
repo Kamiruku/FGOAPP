@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -161,7 +162,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                 servantNpType = servantDetailsList[0].noblePhantasms[servantDetailsList[0].noblePhantasms.size - 1].card
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou //reupdates servant atk and displays it - redundant
                 textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
-                showDamage(fragmentView, view1, servantClass, servantNpType, npDamageMultiplier!!, servantAtk)
+                showDamage(servantDetailsList[0], fragmentView, view1, servantClass, servantNpType, npDamageMultiplier!!, servantAtk)
             }
             else{
                 //only occurs if user does not click anything from the suggestion box
@@ -169,7 +170,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-    private fun showDamage(fragmentView: View, view1: View, servantClass: String, servantNpType: String, npDamageMultiplier: Double, servantAtk: Double){
+    private fun showDamage(servantInfo: ServantDump.ServantDumpItem, fragmentView: View, view1: View, servantClass: String, servantNpType: String, npDamageMultiplier: Double, servantAtk: Double){
         val editTextCardBuffs: EditText = findViewById(R.id.editText_Card_Buff)
         val editTextAttackBuffs: EditText = findViewById(R.id.editText_Attack_Buff)
         val editTextNPDamageBuffs: EditText = findViewById(R.id.editText_NPDamage_Buff)
@@ -217,6 +218,8 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             averageRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
             highRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
 
+            Log.d("TAG", calculateRefund2(20000.0, highRollDamage, servantInfo).toString())
+
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)
             frag.arguments = bundle
@@ -243,8 +246,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun calculateDamage(servantAtk: Double, classAtkBonus: Double, cardDamageValue: Double, npDamageMultiplier: Double, cardMod:Double, randomModifier: Double, atkMod:Double, powerMod:Double, npDamageMod:Double, isSuperEffective: Int, superEffectiveModifier:Double, dmgPlusAdd:Double):Double{
-        val damage:Double
-
         val firstCardBonus:Double = 0.00 //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
         val triangleModifier:Double = 1.00 //Depends on class of enemy but can be 0.5 -> 2.0
         val attributeModifier:Double = 1.00 //Can be 0.9, 1.0, or 1.1
@@ -259,13 +260,62 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val selfDmgCutAdd:Double = 0.00
         val busterChainMod:Double = 0.00 //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
 
-        damage = (servantAtk * npDamageMultiplier *  (firstCardBonus + (cardDamageValue * (1 + cardMod))) * classAtkBonus *
+        val damage = (servantAtk * npDamageMultiplier *  (firstCardBonus + (cardDamageValue * (1 + cardMod))) * classAtkBonus *
                 triangleModifier * attributeModifier * randomModifier * 0.23 * (1 + atkMod - defMod) * criticalModifier *
                 extraCardModifier * (1 - specialDefMod) *  (1 + powerMod + selfDamageMod + (critDamageMod * isCrit) +
                 (npDamageMod * isNP)) * (1 + ((superEffectiveModifier - 1) * isSuperEffective))) + dmgPlusAdd +
                 selfDmgCutAdd + (servantAtk * busterChainMod)
 
         return damage.round(2)
+    }
+
+    private fun calculateRefund2(enemyHp: Double, damage: Double, servantInfo: ServantDump.ServantDumpItem): Double{
+        var npRefund: Double = 0.0
+        val percentage: Double = enemyHp / damage //this calculates how much damage of the np will be overkill
+
+        var total: Double = 0.0
+        var i: Int = 0
+
+        while (total < percentage * 100){
+            total += (servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution[i])
+            Log.d("Name", servantInfo.name)
+            Log.d("NPMUL", ((servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution[i])).toString())
+            Log.d("Total", total.toString())
+            ++i
+        }
+
+        Log.d("Here4", percentage.toString())
+        Log.d("Here5", i.toString())
+        repeat(i){
+            npRefund += calculateRefund(servantInfo, 1.0)
+        }
+
+        repeat(servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution.size - i){
+            npRefund += calculateRefund(servantInfo, 1.5)
+        }
+
+        return npRefund
+    }
+
+    private fun calculateRefund(servantInfo: ServantDump.ServantDumpItem, overkillModifier: Double): Double{
+        val NP: Double
+        val offensiveNPRate: Double = servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npGain.np[0].toDouble() / 100
+        Log.d("NPRate", offensiveNPRate.toString())
+        val firstCardBonus: Double = 0.00
+        val cardNpValue: Double = when (servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].card){
+            "arts" -> 3.0
+            "buster" -> 0.0
+            "quick" -> 1.0
+            else -> 1.0
+        }
+        Log.d("CardNpValue", cardNpValue .toString())
+        val cardMod: Double = 0.00
+        val enemyServerMod: Double = 1.00 //caster = 1.20, berserker = 0.80, etc
+        val npChargeRateMod: Double = 0.00
+        val criticalModifier: Int = 1 //not a crit
+
+        Log.d("NP per hit", (offensiveNPRate * (firstCardBonus + (cardNpValue * (1 + cardMod))) * enemyServerMod * (1 + npChargeRateMod) * criticalModifier * overkillModifier).toString())
+        return offensiveNPRate * (firstCardBonus + (cardNpValue * (1 + cardMod))) * enemyServerMod * (1 + npChargeRateMod) * criticalModifier * overkillModifier
     }
 
     private fun Double.round(decimals: Int): Double {
