@@ -122,6 +122,27 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             }
         }
 
+        autoCompleteServantLevel.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
+                    if (autoCompleteServantLevel.text.toString().toInt() > 120){
+                        autoCompleteServantLevel.setText("120")
+                        selectedLevel = "120"
+                    }
+                    else{
+                        selectedLevel = autoCompleteServantLevel.text.toString()
+                    }
+                    fou = fouCheck(editTextFou)
+                    servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
+                    textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
         spinnerNPLevel.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>, view: View, position: Int, id: Long) {
                 if (servantDetailsList.isNotEmpty()){
@@ -224,7 +245,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
             val refund = calculateRefund2(offensiveNPRate, npDistribution, servantNpType, 20000.0, highRollDamage, cardMod)
             Log.d("Refund", refund.toString())
-            Toast.makeText(this, refund.toString(), Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, refund.toString(), Toast.LENGTH_LONG).show()
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)

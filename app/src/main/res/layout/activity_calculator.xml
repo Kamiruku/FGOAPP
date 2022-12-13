@@ -252,6 +252,7 @@
         android:minHeight="48dp"
         android:text="1"
         android:textSize="14sp"
+        android:maxLength="3"
         app:layout_constraintBottom_toTopOf="@+id/text_Card_Buffs"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
