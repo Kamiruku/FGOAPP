@@ -9,6 +9,7 @@ class Data{
         val servantsWithSameName: List<String> = listOf("Altria Pendragon (Alter)", "BB", "Brynhild", "Cú Chulainn", "Diarmuid Ua Duibhne",
             "Gilgamesh", "Gilles de Rais", "Illyasviel von Einzbern", "Lancelot", "Leonardo da Vinci", "Medusa", "Oda Nobunaga", "Sessyoin Kiara",
             "Tomoe Gozen", "Yu Mei-ren")
+
         for (servant in servantInfo){
             if (servant.name !in servantsWithSameName){
                 servantNames.add(servant.name)

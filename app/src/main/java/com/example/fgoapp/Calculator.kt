@@ -78,6 +78,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var fou: Double
 
         val imageViewClassIcon: ImageView = findViewById(R.id.imageViewClassIcon)
+        var classIcon: Bitmap?
 
         autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, _, arg2, _ ->
             inputName = arg0.getItemAtPosition(arg2).toString()
@@ -85,27 +86,23 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             servantClass = servantDetailsList[0].className
             servantRarity = servantDetailsList[0].rarity
 
-            when(servantRarity){
-                1, 2 -> servantRarityColour = "bronze"
-                3 -> servantRarityColour = "silver"
-                4, 5 -> servantRarityColour = "gold"
-                else -> servantRarityColour = "silver"
+            servantRarityColour = when(servantRarity){
+                1, 2 -> "bronze"
+                3 -> "silver"
+                4, 5 -> "gold"
+                else -> "silver"
             }
 
-            val classIcon = loadBitmapFromAssets("classicons/" + servantClass + "_" + servantRarityColour + ".png")
+            classIcon = loadBitmapFromAssets("classicons/$servantClass" + "_" + "$servantRarityColour.png")
             imageViewClassIcon.setImageBitmap(classIcon)
 
-            if (servantDetailsList.isNotEmpty()){
-                atkGrowth = servantDetailsList[0].atkGrowth
-            }
+            atkGrowth = servantDetailsList[0].atkGrowth
 
             if (atkGrowth.isNotEmpty()){
                 npDamageMultiplier = if (data.getNPMultiplier(servantDetailsList[0]) != placeHolderForSupports){
                     data.getNPMultiplier(servantDetailsList[0])[nPLevel - 1].Value.toDouble() / 1000
                 }
-                else{
-                    0.00
-                }
+                else{ 0.00 }
 
                 fou = fouCheck(editTextFou)
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
@@ -130,9 +127,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                     npDamageMultiplier = if (data.getNPMultiplier(servantDetailsList[0]) != placeHolderForSupports){
                         data.getNPMultiplier(servantDetailsList[0])[nPLevel - 1].Value.toDouble() / 1000
                     }
-                    else{
-                        0.00
-                    }
+                    else{ 0.00 }
                 }
             }
             override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -164,7 +159,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                 fou = fouCheck(editTextFou) //empty string or >2000 check
                 servantClass = servantDetailsList[0].className
                 servantNpType = servantDetailsList[0].noblePhantasms[servantDetailsList[0].noblePhantasms.size - 1].card
-                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou //reupdates servant atk and use it
+                servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou //reupdates servant atk and displays it - redundant
                 textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
                 showDamage(fragmentView, view1, servantClass, servantNpType, npDamageMultiplier!!, servantAtk)
             }
@@ -193,43 +188,28 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val superEffectiveModifier:Double = editTextToDouble(editTextSEBuffs) / 100
         val dmgPlusAdd:Double = editTextToDouble(editTextDMGPlus)
 
-        val isSuperEffective: Int = if (editTextSEBuffs.text.isNotEmpty()){
-            1
-        } else{
-            0
-        }
+        val isSuperEffective: Int = if (editTextSEBuffs.text.isNotEmpty()){ 1
+        } else{ 0 }
 
         val fm: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = fm.beginTransaction()
         val frag = CalculatorFragment()
         val bundle = Bundle()
 
-        var classAtkBonus: Double = 1.0
-
-        when (servantClass){
-            "saber" -> classAtkBonus = 1.0
-            "archer" -> classAtkBonus = 0.95
-            "lancer" -> classAtkBonus = 1.05
-            "rider" -> classAtkBonus = 1.0
-            "caster" -> classAtkBonus = 0.9
-            "assassin" -> classAtkBonus = 0.9
-            "berserker" -> classAtkBonus = 1.1
-            "shielder" -> classAtkBonus = 1.0
-            "ruler" -> classAtkBonus = 1.1
-            "alterEgo" -> classAtkBonus = 1.0
-            "avenger" -> classAtkBonus = 1.1
-            "beast" -> classAtkBonus = 1.0
-            "foreigner" -> classAtkBonus = 1.0
-            "pretender" -> classAtkBonus = 1.0
-            "moonCancer" -> classAtkBonus = 1.0
+        val classAtkBonus = when (servantClass){
+            "caster", "assassin" ->  0.9
+            "archer" -> 0.95
+            "saber", "rider", "shielder", "alterEgo", "foreigner", "pretender", "moonCancer", "beast" -> 1.0
+            "lancer" ->  1.05
+            "berserker" , "ruler", "avenger"->  1.1
+            else -> 1.0
         }
 
-        var cardDamageValue: Double = 1.0
-
-        when (servantNpType){
-            "arts" -> cardDamageValue = 1.0
-            "buster" -> cardDamageValue = 1.5
-            "quick" -> cardDamageValue = 0.8
+        val cardDamageValue = when (servantNpType){
+            "arts" -> 1.0
+            "buster" -> 1.5
+            "quick" -> 0.8
+            else -> 1.0
         }
 
         if (npDamageMultiplier != 0.0){
@@ -318,11 +298,17 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun loadBitmapFromAssets(path: String?): Bitmap? {
+        var inputStream: InputStream? = null
+
         return try {
-            val inputStream: InputStream = assets.open(path!!)
+            inputStream = assets.open(path!!)
             BitmapFactory.decodeStream(inputStream)
-        } catch (ignored: Exception) {
+        }
+        catch (ignored: Exception) {
             null
+        }
+        finally{
+            inputStream!!.close()
         }
     }
 
