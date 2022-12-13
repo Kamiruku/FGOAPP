@@ -1,5 +1,8 @@
 package com.example.fgoapp
 
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +16,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.fgoapp.MainActivity.Companion.servantInfoValue
 import com.example.fgoapp.MainActivity.Companion.servantNames
+import java.io.InputStream
 
 class Calculator : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,14 +68,32 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         var atkGrowth: List<Int> = listOf()
         var selectedLevel: String = "1"
         var servantAtk: Double
+        var servantClass: String
+        var servantRarity: Int
+        var servantRarityColour: String
+        var servantNpType: String
 
         val textViewAtkStat: TextView = findViewById(R.id.textViewAtkStat)
         val editTextFou: EditText = findViewById(R.id.editTextFou)
         var fou: Double
 
+        val imageViewClassIcon: ImageView = findViewById(R.id.imageViewClassIcon)
+
         autoCompleteServantName.onItemClickListener = OnItemClickListener { arg0, _, arg2, _ ->
             inputName = arg0.getItemAtPosition(arg2).toString()
             servantDetailsList = data.getServantDetail(inputName, servantInfoValue)
+            servantClass = servantDetailsList[0].className
+            servantRarity = servantDetailsList[0].rarity
+
+            when(servantRarity){
+                1 - 2 -> servantRarityColour = "bronze"
+                3 -> servantRarityColour = "silver"
+                4 - 5 -> servantRarityColour = "gold"
+                else -> servantRarityColour = "silver"
+            }
+
+            val classIcon = loadBitmapFromAssets("classicons/" + servantClass + "_" + servantRarityColour + ".png")
+            imageViewClassIcon.setImageBitmap(classIcon)
 
             if (servantDetailsList.isNotEmpty()){
                 atkGrowth = servantDetailsList[0].atkGrowth
@@ -140,9 +162,11 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         buttonCalculateDamage.setOnClickListener {
             if (servantDetailsList.isNotEmpty()) {
                 fou = fouCheck(editTextFou) //empty string or >2000 check
+                servantClass = servantDetailsList[0].className
+                servantNpType = servantDetailsList[0].noblePhantasms[servantDetailsList[0].noblePhantasms.size - 1].card
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou //reupdates servant atk and use it
                 textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
-                showDamage(fragmentView, view1,npDamageMultiplier!!, servantAtk)
+                showDamage(fragmentView, view1, servantClass, servantNpType, npDamageMultiplier!!, servantAtk)
             }
             else{
                 //only occurs if user does not click anything from the suggestion box
@@ -150,7 +174,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-    private fun showDamage(fragmentView: View, view1: View, npDamageMultiplier: Double, servantAtk: Double){
+    private fun showDamage(fragmentView: View, view1: View, servantClass: String, servantNpType: String, npDamageMultiplier: Double, servantAtk: Double){
         val editTextCardBuffs: EditText = findViewById(R.id.editText_Card_Buff)
         val editTextAttackBuffs: EditText = findViewById(R.id.editText_Attack_Buff)
         val editTextNPDamageBuffs: EditText = findViewById(R.id.editText_NPDamage_Buff)
@@ -169,15 +193,49 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val superEffectiveModifier:Double = editTextToDouble(editTextSEBuffs) / 100
         val dmgPlusAdd:Double = editTextToDouble(editTextDMGPlus)
 
+        val isSuperEffective: Int = if (editTextSEBuffs.text.isNotEmpty()){
+            1
+        } else{
+            0
+        }
+
         val fm: FragmentManager = supportFragmentManager
         val ft: FragmentTransaction = fm.beginTransaction()
         val frag = CalculatorFragment()
         val bundle = Bundle()
 
+        var classAtkBonus: Double = 1.0
+
+        when (servantClass){
+            "saber" -> classAtkBonus = 1.0
+            "archer" -> classAtkBonus = 0.95
+            "lancer" -> classAtkBonus = 1.05
+            "rider" -> classAtkBonus = 1.0
+            "caster" -> classAtkBonus = 0.9
+            "assassin" -> classAtkBonus = 0.9
+            "berserker" -> classAtkBonus = 1.1
+            "shielder" -> classAtkBonus = 1.0
+            "ruler" -> classAtkBonus = 1.1
+            "alterEgo" -> classAtkBonus = 1.0
+            "avenger" -> classAtkBonus = 1.1
+            "beast" -> classAtkBonus = 1.0
+            "foreigner" -> classAtkBonus = 1.0
+            "pretender" -> classAtkBonus = 1.0
+            "moonCancer" -> classAtkBonus = 1.0
+        }
+
+        var cardDamageValue: Double = 1.0
+
+        when (servantNpType){
+            "arts" -> cardDamageValue = 1.0
+            "buster" -> cardDamageValue = 1.5
+            "quick" -> cardDamageValue = 0.8
+        }
+
         if (npDamageMultiplier != 0.0){
-            lowRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 0.9, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            averageRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
-            highRollDamage = calculateDamage(servantAtk, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, superEffectiveModifier, dmgPlusAdd)
+            lowRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 0.9, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
+            averageRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
+            highRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)
@@ -204,13 +262,12 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun calculateDamage(servantAtk: Double, npDamageMultiplier: Double, cardMod:Double, randomModifier: Double, atkMod:Double, powerMod:Double, npDamageMod:Double, superEffectiveModifier:Double, dmgPlusAdd:Double):Double{ val damage:Double
+    private fun calculateDamage(servantAtk: Double, classAtkBonus: Double, cardDamageValue: Double, npDamageMultiplier: Double, cardMod:Double, randomModifier: Double, atkMod:Double, powerMod:Double, npDamageMod:Double, isSuperEffective: Int, superEffectiveModifier:Double, dmgPlusAdd:Double):Double{
+        val damage:Double
 
         val firstCardBonus:Double = 0.00 //0.5 if first card is a Buster card, 0 otherwise. No bonus to NPs
-        val cardDamageValue:Double = 0.80
-        val classAtkBonus:Double = 1.10
-        val triangleModifier:Double = 1.00
-        val attributeModifier:Double = 1.00
+        val triangleModifier:Double = 1.00 //Depends on class of enemy but can be 0.5 -> 2.0
+        val attributeModifier:Double = 1.00 //Can be 0.9, 1.0, or 1.1
         val defMod:Double = 0.0
         val criticalModifier:Double = 1.00
         val extraCardModifier:Double = 1.00 //2 if Extra card in a Brave Chain, 3.5 if Extra card in a Buster/Quick/Arts Brave Chain, 1 if neither
@@ -219,7 +276,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         val critDamageMod:Double = 0.00
         val isCrit:Int = 0 //1 if crit, 0 otherwise
         val isNP:Int = 1 //1 if NP attack, 0 otherwise
-        val isSuperEffective:Int = 0 //1 if the enemy qualifies (via trait or status), 0 otherwise
         val selfDmgCutAdd:Double = 0.00
         val busterChainMod:Double = 0.00 //0.2 if it's a Buster card in a Buster Chain, 0 otherwise
 
@@ -258,6 +314,15 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             } else{
                 output.toDouble()
             }
+        }
+    }
+
+    private fun loadBitmapFromAssets(path: String?): Bitmap? {
+        return try {
+            val inputStream: InputStream = assets.open(path!!)
+            BitmapFactory.decodeStream(inputStream)
+        } catch (ignored: Exception) {
+            null
         }
     }
 
