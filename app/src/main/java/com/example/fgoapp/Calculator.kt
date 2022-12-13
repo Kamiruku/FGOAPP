@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.fgoapp.MainActivity.Companion.servantInfoValue
 import com.example.fgoapp.MainActivity.Companion.servantNames
 import java.io.InputStream
+import kotlin.math.floor
 
 class Calculator : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -213,12 +214,17 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             else -> 1.0
         }
 
+        val npDistribution: List<Int> = servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution
+        val offensiveNPRate: Double = servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npGain.np[0].toDouble()
+
         if (npDamageMultiplier != 0.0){
             lowRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 0.9, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
             averageRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
             highRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
 
-            Log.d("TAG", calculateRefund2(20000.0, highRollDamage, servantInfo).toString())
+            val refund = calculateRefund2(offensiveNPRate, npDistribution, servantNpType, 20000.0, highRollDamage, cardMod)
+            Log.d("Refund", refund.toString())
+            Toast.makeText(this, refund.toString(), Toast.LENGTH_LONG).show()
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)
@@ -269,53 +275,43 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         return damage.round(2)
     }
 
-    private fun calculateRefund2(enemyHp: Double, damage: Double, servantInfo: ServantDump.ServantDumpItem): Double{
+    private fun calculateRefund2(offensiveNPRate: Double, npDistribution: List<Int>, servantNpType: String, enemyHp: Double, damage: Double, cardMod: Double): Double{
+        var enemyHpPlace: Double = enemyHp
         var npRefund: Double = 0.0
-        val percentage: Double = enemyHp / damage //this calculates how much damage of the np will be overkill
+        var oKH: Int = 0
+        var index: Int = 0
 
-        var total: Double = 0.0
-        var i: Int = 0
+        while (index < npDistribution.size){
+            enemyHpPlace -= (npDistribution[index] * damage) / 100
 
-        while (total < percentage * 100){
-            total += (servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution[i])
-            Log.d("Name", servantInfo.name)
-            Log.d("NPMUL", ((servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution[i])).toString())
-            Log.d("Total", total.toString())
-            ++i
+            if (enemyHpPlace < 0){
+                oKH++
+            }
+            ++index
         }
 
-        Log.d("Here4", percentage.toString())
-        Log.d("Here5", i.toString())
-        repeat(i){
-            npRefund += calculateRefund(servantInfo, 1.0)
-        }
+        val refundFromOKH = calculateRefund(offensiveNPRate, servantNpType, cardMod, 1.5) * oKH
+        val refundFromNormal = calculateRefund(offensiveNPRate, servantNpType, cardMod,1.0) * (npDistribution.size - oKH)
 
-        repeat(servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution.size - i){
-            npRefund += calculateRefund(servantInfo, 1.5)
-        }
-
-        return npRefund
+        return refundFromNormal + refundFromOKH
     }
 
-    private fun calculateRefund(servantInfo: ServantDump.ServantDumpItem, overkillModifier: Double): Double{
+    private fun calculateRefund(offensiveNPRate: Double, servantNpType: String, cardMod: Double, overkillModifier: Double): Double{
         val NP: Double
-        val offensiveNPRate: Double = servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npGain.np[0].toDouble() / 100
-        Log.d("NPRate", offensiveNPRate.toString())
         val firstCardBonus: Double = 0.00
-        val cardNpValue: Double = when (servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].card){
+        val cardNpValue: Double = when (servantNpType){
             "arts" -> 3.0
             "buster" -> 0.0
             "quick" -> 1.0
             else -> 1.0
         }
-        Log.d("CardNpValue", cardNpValue .toString())
-        val cardMod: Double = 0.00
+
         val enemyServerMod: Double = 1.00 //caster = 1.20, berserker = 0.80, etc
         val npChargeRateMod: Double = 0.00
         val criticalModifier: Int = 1 //not a crit
 
-        Log.d("NP per hit", (offensiveNPRate * (firstCardBonus + (cardNpValue * (1 + cardMod))) * enemyServerMod * (1 + npChargeRateMod) * criticalModifier * overkillModifier).toString())
-        return offensiveNPRate * (firstCardBonus + (cardNpValue * (1 + cardMod))) * enemyServerMod * (1 + npChargeRateMod) * criticalModifier * overkillModifier
+        val hitRefund: Double =  ((offensiveNPRate / 100 * (firstCardBonus + (cardNpValue * (1 + cardMod))) * enemyServerMod * (1 + npChargeRateMod) * criticalModifier) * overkillModifier)
+        return hitRefund
     }
 
     private fun Double.round(decimals: Int): Double {
