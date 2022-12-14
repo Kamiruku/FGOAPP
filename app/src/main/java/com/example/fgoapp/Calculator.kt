@@ -1,15 +1,14 @@
 package com.example.fgoapp
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.*
 import android.widget.AdapterView.OnItemClickListener
 import androidx.appcompat.app.AppCompatActivity
@@ -18,9 +17,8 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.fgoapp.MainActivity.Companion.servantInfoValue
 import com.example.fgoapp.MainActivity.Companion.servantNames
 import java.io.InputStream
-import kotlin.math.floor
 
-class Calculator : AppCompatActivity(), View.OnClickListener {
+class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragmentRefund.OnDataPass {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculator)
@@ -88,7 +86,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             servantClass = servantDetailsList[0].className
             servantRarity = servantDetailsList[0].rarity
 
-            servantRarityColour = when(servantRarity){
+            servantRarityColour = when (servantRarity){
                 1, 2 -> "bronze"
                 3 -> "silver"
                 4, 5 -> "gold"
@@ -128,18 +126,21 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
 
         autoCompleteServantLevel.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                if (servantDetailsList.isNotEmpty() && atkGrowth.isNotEmpty()) {
-                    if (autoCompleteServantLevel.text.isNotEmpty() && autoCompleteServantLevel.text.toString().toInt() > 120){
+                if (autoCompleteServantLevel.text.isNotEmpty()){
+                    if (autoCompleteServantLevel.text.toString().toInt() > 120){
                         autoCompleteServantLevel.setText("120")
                         selectedLevel = "120"
                     }
-                    else if (autoCompleteServantLevel.text.isNotEmpty()){
-                        selectedLevel = autoCompleteServantLevel.text.toString()
-                    }
-                    else{
+                    else if (autoCompleteServantLevel.text.toString() == "0"){
+                        autoCompleteServantLevel.setText("1")
                         selectedLevel = "1"
                     }
+                    else{
+                        selectedLevel = autoCompleteServantLevel.text.toString()
+                    }
+                }
 
+                if (atkGrowth.isNotEmpty()) {
                     fou = fouCheck(editTextFou)
                     servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou
                     textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
@@ -182,7 +183,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         //Initialised here so it can be used in and out of show damage method
         val view1: View = findViewById(R.id.view1)
         view1.visibility = INVISIBLE
-        val fragmentView: View = findViewById(R.id.fragment_container_view)
+        val fragmentView: View = findViewById(R.id.fragment_container_view_results)
         fragmentView.visibility = INVISIBLE
 
         val buttonCalculateDamage : Button = findViewById(R.id.button_Calculate_Damage)
@@ -200,7 +201,21 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
                 Toast.makeText(this, "Please select a servant from the suggestion box.", Toast.LENGTH_LONG).show()
             }
         }
+
+        val activityBackground = (findViewById<View>(android.R.id.content) as ViewGroup).getChildAt(0) as ViewGroup
+        activityBackground.setOnTouchListener(object : OnSwipeTouchListener(this@Calculator) {
+            override fun onSwipeLeft() {
+                val fm: FragmentManager = supportFragmentManager
+                val ft: FragmentTransaction = fm.beginTransaction()
+                val frag = CalculatorFragmentRefund()
+                buttonCalculateDamage.visibility = INVISIBLE
+                view1.visibility = VISIBLE
+                ft.replace(R.id.fragment_container_view_refund, frag)
+                ft.commit()
+            }
+        })
     }
+
     private fun showDamage(servantInfo: ServantDump.ServantDumpItem, fragmentView: View, view1: View, servantClass: String, servantNpType: String, npDamageMultiplier: Double, servantAtk: Double){
         val editTextCardBuffs: EditText = findViewById(R.id.editText_Card_Buff)
         val editTextAttackBuffs: EditText = findViewById(R.id.editText_Attack_Buff)
@@ -252,14 +267,11 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             averageRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
             highRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
 
-            val refund = calculateRefund2(offensiveNPRate, npDistribution, servantNpType, 20000.0, highRollDamage, cardMod)
-            Log.d("Refund", refund.toString())
-            //Toast.makeText(this, refund.toString(), Toast.LENGTH_LONG).show()
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)
             frag.arguments = bundle
-            ft.replace(R.id.fragment_container_view, frag)
+            ft.replace(R.id.fragment_container_view_results, frag)
             ft.show(frag)
         }
         else{
@@ -305,7 +317,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         return damage.round(2)
     }
 
-    private fun calculateRefund2(offensiveNPRate: Double, npDistribution: List<Int>, servantNpType: String, enemyHp: Double, damage: Double, cardMod: Double): Double{
+    private fun calculateNpRefund(offensiveNPRate: Double, npDistribution: List<Int>, servantNpType: String, enemyHp: Double, damage: Double, cardMod: Double): Double{
         var enemyHpPlace: Double = enemyHp
         var npRefund: Double = 0.0
         var oKH: Int = 0
@@ -320,13 +332,13 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
             ++index
         }
 
-        val refundFromOKH = calculateRefund(offensiveNPRate, servantNpType, cardMod, 1.5) * oKH
-        val refundFromNormal = calculateRefund(offensiveNPRate, servantNpType, cardMod,1.0) * (npDistribution.size - oKH)
+        val refundFromOKH = calculateHitRefund(offensiveNPRate, servantNpType, cardMod, 1.5) * oKH
+        val refundFromNormal = calculateHitRefund(offensiveNPRate, servantNpType, cardMod,1.0) * (npDistribution.size - oKH)
 
         return refundFromNormal + refundFromOKH
     }
 
-    private fun calculateRefund(offensiveNPRate: Double, servantNpType: String, cardMod: Double, overkillModifier: Double): Double{
+    private fun calculateHitRefund(offensiveNPRate: Double, servantNpType: String, cardMod: Double, overkillModifier: Double): Double{
         val NP: Double
         val firstCardBonus: Double = 0.00
         val cardNpValue: Double = when (servantNpType){
@@ -365,9 +377,9 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
         return if (output.isEmpty()){
             0.00
         } else{
-            if (output.toDouble() > 2000){
+            if (output.toDouble() > 4000){
                 input.setText("2000")
-                2000.00
+                4000.00
             } else{
                 output.toDouble()
             }
@@ -390,6 +402,10 @@ class Calculator : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(p0: View?) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onDataPass(data: List<String>) {
         TODO("Not yet implemented")
     }
 }
