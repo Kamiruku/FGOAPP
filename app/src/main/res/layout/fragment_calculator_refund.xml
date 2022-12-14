@@ -10,15 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <CheckBox
-            android:id="@+id/checkBox"
+        <View
+            android:id="@+id/view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="CheckBox"
-            app:layout_constraintBottom_toTopOf="@+id/editTextEnemyTwoHp"
+            android:background="#CC512da8"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEnemyOneHp" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
         <EditText
             android:id="@+id/editTextEnemyOneHp"
@@ -32,6 +34,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CheckBox"
+            app:layout_constraintBottom_toTopOf="@+id/editTextEnemyTwoHp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEnemyOneHp" />
+
         <EditText
             android:id="@+id/editTextEnemyTwoHp"
             android:layout_width="wrap_content"
@@ -44,6 +56,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBox" />
 
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CheckBox"
+            app:layout_constraintBottom_toTopOf="@+id/editTextEnemyThreeHp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextEnemyTwoHp" />
+
         <EditText
             android:id="@+id/editTextEnemyThreeHp"
             android:layout_width="wrap_content"
@@ -55,16 +77,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBox2" />
-
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CheckBox"
-            app:layout_constraintBottom_toTopOf="@+id/editTextEnemyThreeHp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEnemyTwoHp" />
 
         <CheckBox
             android:id="@+id/checkBox3"

@@ -208,8 +208,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
                 val fm: FragmentManager = supportFragmentManager
                 val ft: FragmentTransaction = fm.beginTransaction()
                 val frag = CalculatorFragmentRefund()
-                buttonCalculateDamage.visibility = INVISIBLE
-                view1.visibility = VISIBLE
                 ft.replace(R.id.fragment_container_view_refund, frag)
                 ft.commit()
             }
