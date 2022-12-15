@@ -17,10 +17,18 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.fgoapp.MainActivity.Companion.servantInfoValue
 import com.example.fgoapp.MainActivity.Companion.servantNames
+import com.google.android.material.internal.ContextUtils.getActivity
 import java.io.InputStream
 
 class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragmentRefund.OnDataPass {
     var enemyDetails: List<String?> = emptyList()
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            MainActivity.data.hideDecor(window)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -406,7 +414,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
 
     private fun calculateNpRefund(npChargeRateMod: Double, offensiveNPRate: Double, npDistribution: List<Int>, servantNpType: String, enemyHp: Double, damage: Double, cardMod: Double): Double{
         var enemyHpPlace: Double = enemyHp
-        var npRefund: Double = 0.0
         var oKH: Int = 0
         var index: Int = 0
 
@@ -426,7 +433,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
     }
 
     private fun calculateHitRefund(npChargeRateMod: Double, offensiveNPRate: Double, servantNpType: String, cardMod: Double, overkillModifier: Double): Double{
-        val NP: Double
         val firstCardBonus: Double = 0.00
         val cardNpValue: Double = when (servantNpType){
             "arts" -> 3.0

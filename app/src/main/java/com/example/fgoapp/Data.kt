@@ -6,10 +6,40 @@ import android.view.GestureDetector.SimpleOnGestureListener
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import android.view.Window
 import com.google.gson.Gson
+import kotlin.math.abs
 
 
 class Data{
+    fun hideDecor(window: Window) {
+        try {
+            val decorView: View = window.decorView
+            decorView.setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        or View.SYSTEM_UI_FLAG_FULLSCREEN
+                        or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            )
+            decorView.setOnSystemUiVisibilityChangeListener { visibility ->
+                if ((visibility) == 0) {
+                    decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_FULLSCREEN)
+                } else {
+                    decorView.setSystemUiVisibility(
+                        (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                                or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                                or View.SYSTEM_UI_FLAG_FULLSCREEN
+                                or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+                    )
+                }
+            }
+        } catch (ignored: Exception) { }
+    }
+
     fun getServantNames(servantInfo: ServantDump):List<String>{
         val servantNames: MutableList<String> = mutableListOf()
         val servantsWithSameName: List<String> = listOf("Altria Pendragon (Alter)", "BB", "Brynhild", "Cú Chulainn", "Diarmuid Ua Duibhne",
@@ -85,18 +115,10 @@ open class OnSwipeTouchListener(context: Context?) : OnTouchListener {
             return true
         }
 
-        override fun onFling(
-            e1: MotionEvent,
-            e2: MotionEvent,
-            velocityX: Float,
-            velocityY: Float
-        ): Boolean {
+        override fun onFling(e1: MotionEvent, e2: MotionEvent, velocityX: Float, velocityY: Float): Boolean {
             val distanceX = e2.x - e1.x
             val distanceY = e2.y - e1.y
-            if (Math.abs(distanceX) > Math.abs(distanceY) && Math.abs(distanceX) > Companion.SWIPE_DISTANCE_THRESHOLD && Math.abs(
-                    velocityX
-                ) > Companion.SWIPE_VELOCITY_THRESHOLD
-            ) {
+            if (abs(distanceX) > abs(distanceY) && abs(distanceX) > Companion.SWIPE_DISTANCE_THRESHOLD && abs(velocityX) > Companion.SWIPE_VELOCITY_THRESHOLD) {
                 if (distanceX > 0) onSwipeRight() else onSwipeLeft()
                 return true
             }

@@ -2,6 +2,7 @@ package com.example.fgoapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     companion object{
         var servantInfoValue: ServantDump = ServantDump()
         var servantNames: List<String> = listOf()
+        val data = Data()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -21,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
-        val data = Data()
         servantInfoValue = data.getServantInfo(getJsonFromAssets())
         servantNames = data.getServantNames(servantInfoValue)
 
@@ -47,5 +48,12 @@ class MainActivity : AppCompatActivity() {
             return null
         }
         return json
+    }
+
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        if (hasFocus) {
+            data.hideDecor(window)
+        }
     }
 }
