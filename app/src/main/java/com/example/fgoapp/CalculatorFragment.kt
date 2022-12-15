@@ -2,8 +2,11 @@ package com.example.fgoapp
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -27,11 +30,24 @@ class CalculatorFragment : Fragment() {
         val imageView: ImageView = view.findViewById(R.id.imageView)
         imageView.setBackgroundColor(Color.rgb(81, 45, 128))
 
+        val textRefund: TextView = view.findViewById(R.id.textViewRefund)
+        //textRefund.visibility = INVISIBLE
+        val imageViewBottom: ImageView = view.findViewById(R.id.imageViewBottom)
+        //imageViewBottom.visibility = INVISIBLE
+
         if (arguments != null){
             val damage = requireArguments().getStringArray("DamageBundle")
             textLowRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(0)?.toDouble()))
             textAverageRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(1)?.toDouble()))
             textHighRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(2)?.toDouble()))
+
+            val refund = requireArguments().getDoubleArray("TotalRefund")
+            if (refund != null){
+                textRefund.visibility = VISIBLE
+                imageViewBottom.visibility = VISIBLE
+                textRefund.text = (refund[0] + refund[1] + refund[2]).toString()
+                Log.d("Cat", refund[0].toString())
+            }
         }
         return view
     }

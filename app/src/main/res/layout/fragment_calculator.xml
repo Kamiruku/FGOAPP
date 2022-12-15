@@ -15,14 +15,29 @@
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="350dp"
-            android:layout_height="210dp"
+            android:layout_height="250dp"
             android:background="@color/purple_200"
             android:src="@android:drawable/screen_background_dark"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.306"
+            app:layout_constraintVertical_bias="0.313"
+            app:srcCompat="@color/purple_500" />
+
+        <ImageView
+            android:id="@+id/imageViewBottom"
+            android:layout_width="350dp"
+            android:layout_height="75dp"
+            android:background="@color/purple_200"
+            android:src="@android:drawable/screen_background_dark"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.553"
             app:srcCompat="@color/purple_500" />
 
         <TextView
@@ -123,6 +138,17 @@
             app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_Damage_Average_Roll_Label_Fragment"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/textViewRefund"
+            android:layout_width="125dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="25dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_Damage_High_Roll_Label_Fragment"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

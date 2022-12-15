@@ -28,13 +28,27 @@ class CalculatorFragmentRefund : Fragment() {
         val editTextEnemyTwoHp: EditText = view.findViewById(R.id.editTextEnemyTwoHp)
         val editTextEnemyThreeHp: EditText = view.findViewById(R.id.editTextEnemyThreeHp)
 
-        var dataPassed: List<String>
+        var dataPassed: List<String?>
 
         val buttonExit: Button = view.findViewById(R.id.buttonExitRefund)
         buttonExit.setOnClickListener{
-            dataPassed = listOf(editTextEnemyOneHp.text.toString(), editTextEnemyTwoHp.text.toString(),
-                editTextEnemyThreeHp.text.toString()
-            )
+            val hp1: String? = when (editTextEnemyOneHp.text.isNotEmpty()){
+                true -> editTextEnemyOneHp.text.toString()
+                false -> null
+            }
+
+            val hp2: String? = when (editTextEnemyTwoHp.text.isNotEmpty()){
+                true -> editTextEnemyTwoHp.text.toString()
+                false -> null
+            }
+
+            val hp3: String? = when (editTextEnemyThreeHp.text.isNotEmpty()){
+                true -> editTextEnemyThreeHp.text.toString()
+                false -> null
+            }
+
+            dataPassed = listOf(hp1, hp2, hp3)
+            passData(dataPassed)
 
             val manager = requireActivity().supportFragmentManager
             manager.beginTransaction().remove(this).commit()
@@ -44,10 +58,10 @@ class CalculatorFragmentRefund : Fragment() {
     }
 
     interface OnDataPass {
-        fun onDataPass(data: List<String>)
+        fun onDataPass(data: List<String?>)
     }
 
-    fun passData(data: List<String>){
+    fun passData(data: List<String?>){
         dataPasser.onDataPass(data)
     }
 }

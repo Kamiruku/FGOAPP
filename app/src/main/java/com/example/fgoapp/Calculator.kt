@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
@@ -19,6 +20,8 @@ import com.example.fgoapp.MainActivity.Companion.servantNames
 import java.io.InputStream
 
 class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragmentRefund.OnDataPass {
+    var enemyDetails: List<String?> = emptyList()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_calculator)
@@ -132,7 +135,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
                         selectedLevel = "120"
                     }
                     else if (autoCompleteServantLevel.text.toString() == "0"){
-                        autoCompleteServantLevel.setText("1")
                         selectedLevel = "1"
                     }
                     else{
@@ -265,6 +267,26 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
             averageRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
             highRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
 
+            if (enemyDetails.isNotEmpty()){
+                val refund1 = if (enemyDetails[0] != null){
+                    calculateNpRefund(offensiveNPRate, npDistribution, servantNpType, enemyDetails[0]!!.toDouble(), lowRollDamage, cardMod)
+                }
+                else{ 0.00 }
+
+                val refund2 = if (enemyDetails[1] != null){
+                    calculateNpRefund(offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage, cardMod)
+
+                }
+                else{ 0.00 }
+
+                val refund3 = if (enemyDetails[2] != null){
+                    calculateNpRefund(offensiveNPRate, npDistribution, servantNpType, enemyDetails[0]!!.toDouble(), lowRollDamage, cardMod)
+                }
+                else{ 0.00 }
+
+                val refundTotal = doubleArrayOf(refund1, refund2, refund3)
+                bundle.putDoubleArray("TotalRefund", refundTotal)
+            }
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
             bundle.putStringArray("DamageBundle", damage)
@@ -403,7 +425,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
         TODO("Not yet implemented")
     }
 
-    override fun onDataPass(data: List<String>) {
-        TODO("Not yet implemented")
+    override fun onDataPass(data: List<String?>) {
+        enemyDetails = data
     }
 }
