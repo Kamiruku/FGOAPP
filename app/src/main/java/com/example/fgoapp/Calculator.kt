@@ -210,6 +210,13 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
                 val fm: FragmentManager = supportFragmentManager
                 val ft: FragmentTransaction = fm.beginTransaction()
                 val frag = CalculatorFragmentRefund()
+
+                if (enemyDetails.isNotEmpty()){
+                    val bundle = Bundle()
+                    bundle.putStringArray("EnemyDetails", enemyDetails.toTypedArray())
+                    frag.arguments = bundle
+                }
+
                 ft.replace(R.id.fragment_container_view_refund, frag)
                 ft.commit()
             }
@@ -268,24 +275,84 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
             highRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.1, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
 
             if (enemyDetails.isNotEmpty()){
-                val refund1 = if (enemyDetails[0] != null){
-                    calculateNpRefund(offensiveNPRate, npDistribution, servantNpType, enemyDetails[0]!!.toDouble(), lowRollDamage, cardMod)
+                if (enemyDetails[0] != null){
+                    val npChargeRateMod = enemyDetails[0]!!.toDouble() / 100
+                    Log.d("NP", npChargeRateMod.toString())
+
+                    val refundLow1 = if (enemyDetails[1] != null){
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundLow2 = if (enemyDetails[2] != null){
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), lowRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundLow3 = if (enemyDetails[3] != null){
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundHigh1 = if (enemyDetails[1] != null){
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundHigh2 = if (enemyDetails[2] != null){
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), highRollDamage, cardMod)
+
+                    }
+                    else{ 0.00 }
+
+                    val refundHigh3 = if (enemyDetails[3] != null){
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundLowTotal = doubleArrayOf(refundLow1, refundLow2, refundLow3)
+                    val refundHighTotal = doubleArrayOf(refundHigh1, refundHigh2, refundHigh3)
+                    bundle.putDoubleArray("TotalRefundLow", refundLowTotal)
+                    bundle.putDoubleArray("TotalRefundHigh", refundHighTotal)
                 }
-                else{ 0.00 }
+                else{
+                    val refundLow1 = if (enemyDetails[1] != null){
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
 
-                val refund2 = if (enemyDetails[1] != null){
-                    calculateNpRefund(offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage, cardMod)
+                    val refundLow2 = if (enemyDetails[2] != null){
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), lowRollDamage, cardMod)
 
+                    }
+                    else{ 0.00 }
+
+                    val refundLow3 = if (enemyDetails[3] != null){
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundHigh1 = if (enemyDetails[1] != null){
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundHigh2 = if (enemyDetails[2] != null){
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), highRollDamage, cardMod)
+
+                    }
+                    else{ 0.00 }
+
+                    val refundHigh3 = if (enemyDetails[3] != null){
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage, cardMod)
+                    }
+                    else{ 0.00 }
+
+                    val refundLowTotal = doubleArrayOf(refundLow1, refundLow2, refundLow3)
+                    val refundHighTotal = doubleArrayOf(refundHigh1, refundHigh2, refundHigh3)
+                    bundle.putDoubleArray("TotalRefundLow", refundLowTotal)
+                    bundle.putDoubleArray("TotalRefundHigh", refundHighTotal)
                 }
-                else{ 0.00 }
-
-                val refund3 = if (enemyDetails[2] != null){
-                    calculateNpRefund(offensiveNPRate, npDistribution, servantNpType, enemyDetails[0]!!.toDouble(), lowRollDamage, cardMod)
-                }
-                else{ 0.00 }
-
-                val refundTotal = doubleArrayOf(refund1, refund2, refund3)
-                bundle.putDoubleArray("TotalRefund", refundTotal)
             }
 
             val damage = arrayOf<String>(lowRollDamage.toString(), averageRollDamage.toString(), highRollDamage.toString())
@@ -337,7 +404,7 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
         return damage.round(2)
     }
 
-    private fun calculateNpRefund(offensiveNPRate: Double, npDistribution: List<Int>, servantNpType: String, enemyHp: Double, damage: Double, cardMod: Double): Double{
+    private fun calculateNpRefund(npChargeRateMod: Double, offensiveNPRate: Double, npDistribution: List<Int>, servantNpType: String, enemyHp: Double, damage: Double, cardMod: Double): Double{
         var enemyHpPlace: Double = enemyHp
         var npRefund: Double = 0.0
         var oKH: Int = 0
@@ -352,13 +419,13 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
             ++index
         }
 
-        val refundFromOKH = calculateHitRefund(offensiveNPRate, servantNpType, cardMod, 1.5) * oKH
-        val refundFromNormal = calculateHitRefund(offensiveNPRate, servantNpType, cardMod,1.0) * (npDistribution.size - oKH)
+        val refundFromOKH = calculateHitRefund(npChargeRateMod, offensiveNPRate, servantNpType, cardMod, 1.5) * oKH
+        val refundFromNormal = calculateHitRefund(npChargeRateMod, offensiveNPRate, servantNpType, cardMod,1.0) * (npDistribution.size - oKH)
 
         return refundFromNormal + refundFromOKH
     }
 
-    private fun calculateHitRefund(offensiveNPRate: Double, servantNpType: String, cardMod: Double, overkillModifier: Double): Double{
+    private fun calculateHitRefund(npChargeRateMod: Double, offensiveNPRate: Double, servantNpType: String, cardMod: Double, overkillModifier: Double): Double{
         val NP: Double
         val firstCardBonus: Double = 0.00
         val cardNpValue: Double = when (servantNpType){
@@ -369,7 +436,6 @@ class Calculator : AppCompatActivity(), View.OnClickListener, CalculatorFragment
         }
 
         val enemyServerMod: Double = 1.00 //caster = 1.20, berserker = 0.80, etc
-        val npChargeRateMod: Double = 0.00
         val criticalModifier: Int = 1 //not a crit
 
         val hitRefund: Double =  ((offensiveNPRate / 100 * (firstCardBonus + (cardNpValue * (1 + cardMod))) * enemyServerMod * (1 + npChargeRateMod) * criticalModifier) * overkillModifier)

@@ -27,11 +27,25 @@ class CalculatorFragmentRefund : Fragment() {
         val editTextEnemyOneHp: EditText = view.findViewById(R.id.editTextEnemyOneHp)
         val editTextEnemyTwoHp: EditText = view.findViewById(R.id.editTextEnemyTwoHp)
         val editTextEnemyThreeHp: EditText = view.findViewById(R.id.editTextEnemyThreeHp)
+        val editTextNpGain: EditText = view.findViewById(R.id.editTextNpGain)
 
         var dataPassed: List<String?>
 
+        if (arguments != null){
+            val existingEnemies = requireArguments().getStringArray("EnemyDetails")
+            editTextNpGain.setText(existingEnemies?.get(0) ?: String())
+            editTextEnemyOneHp.setText(existingEnemies?.get(1) ?: String())
+            editTextEnemyTwoHp.setText(existingEnemies?.get(2) ?: String())
+            editTextEnemyThreeHp.setText(existingEnemies?.get(3) ?: String())
+        }
+
         val buttonExit: Button = view.findViewById(R.id.buttonExitRefund)
         buttonExit.setOnClickListener{
+            val npGainBuff: String? = when (editTextNpGain.text.isNotEmpty()){
+                true -> editTextNpGain.text.toString()
+                false -> null
+            }
+
             val hp1: String? = when (editTextEnemyOneHp.text.isNotEmpty()){
                 true -> editTextEnemyOneHp.text.toString()
                 false -> null
@@ -47,7 +61,7 @@ class CalculatorFragmentRefund : Fragment() {
                 false -> null
             }
 
-            dataPassed = listOf(hp1, hp2, hp3)
+            dataPassed = listOf(npGainBuff, hp1, hp2, hp3)
             passData(dataPassed)
 
             val manager = requireActivity().supportFragmentManager

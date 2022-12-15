@@ -2,7 +2,6 @@ package com.example.fgoapp
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -30,10 +29,12 @@ class CalculatorFragment : Fragment() {
         val imageView: ImageView = view.findViewById(R.id.imageView)
         imageView.setBackgroundColor(Color.rgb(81, 45, 128))
 
-        val textRefund: TextView = view.findViewById(R.id.textViewRefund)
-        //textRefund.visibility = INVISIBLE
+        val textLabelRefund: TextView = view.findViewById(R.id.text_Refund_Label_Fragment)
+        textLabelRefund.visibility = INVISIBLE
+        val textRefund: TextView = view.findViewById(R.id.text_refund)
+        textRefund.visibility = INVISIBLE
         val imageViewBottom: ImageView = view.findViewById(R.id.imageViewBottom)
-        //imageViewBottom.visibility = INVISIBLE
+        imageViewBottom.visibility = INVISIBLE
 
         if (arguments != null){
             val damage = requireArguments().getStringArray("DamageBundle")
@@ -41,14 +42,22 @@ class CalculatorFragment : Fragment() {
             textAverageRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(1)?.toDouble()))
             textHighRollDamage.text = getString(R.string.numberPlus, NumberFormat.getNumberInstance(Locale.US).format(damage?.get(2)?.toDouble()))
 
-            val refund = requireArguments().getDoubleArray("TotalRefund")
-            if (refund != null){
+            val refundLow = requireArguments().getDoubleArray("TotalRefundLow")
+            val refundHigh = requireArguments().getDoubleArray("TotalRefundHigh")
+            if (refundLow != null && refundHigh != null){
+                textLabelRefund.visibility = VISIBLE
                 textRefund.visibility = VISIBLE
                 imageViewBottom.visibility = VISIBLE
-                textRefund.text = (refund[0] + refund[1] + refund[2]).toString()
-                Log.d("Cat", refund[0].toString())
+                textRefund.text = getString(R.string.numberPlus, (refundLow[0] + refundLow[1] + refundLow[2]).round(2).toString()
+                + " ~ " + (refundHigh[0] + refundHigh[1] + refundHigh[2]).round(2).toString())
             }
         }
         return view
+    }
+
+    private fun Double.round(decimals: Int): Double {
+        var multiplier = 1.0
+        repeat(decimals) { multiplier *= 10 }
+        return kotlin.math.round(this * multiplier) / multiplier
     }
 }
