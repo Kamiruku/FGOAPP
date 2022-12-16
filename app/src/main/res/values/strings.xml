@@ -20,4 +20,6 @@
     <string name="fous">\u0020Fous\u0020</string>
     <string name="numberPlus">\u0020%1$s</string>
     <string name="refund">\u0020Refund</string>
+    <string name="onehundredtwenty">120</string>
+    <string name="fourthousand">4000</string>
 </resources>

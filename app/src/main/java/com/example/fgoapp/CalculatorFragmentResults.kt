@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import java.text.NumberFormat
 import java.util.*
 
-class CalculatorFragment : Fragment() {
+class CalculatorFragmentResults : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

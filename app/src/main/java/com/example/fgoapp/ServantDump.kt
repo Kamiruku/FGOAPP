@@ -1,6 +1,5 @@
 package com.example.fgoapp
 
-import android.renderscript.Script
 import java.io.Serializable
 
 class ServantDump : ArrayList<ServantDump.ServantDumpItem>() , Serializable{

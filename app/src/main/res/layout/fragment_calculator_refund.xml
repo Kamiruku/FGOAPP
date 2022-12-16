@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <View
-            android:id="@+id/view"
+            android:id="@+id/viewPager"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="#CC512da8"
@@ -56,7 +56,7 @@
             android:ems="10"
             android:inputType="number"
             android:minHeight="48dp"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/checkBox"
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Special?"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/editTextEnemyThreeHp"
@@ -102,10 +102,10 @@
 
         <Button
             android:id="@+id/buttonExitRefund"
-            android:layout_width="wrap_content"
+            android:layout_width="125dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Back"
+            android:text="Initialise Enemies"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -116,11 +116,10 @@
             android:id="@+id/editTextNpGain"
             android:layout_width="125dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
             android:layout_marginTop="70dp"
             android:ems="10"
             android:inputType="number"
-            app:layout_constraintBottom_toBottomOf="@+id/view"
+            app:layout_constraintBottom_toBottomOf="@+id/viewPager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/text_Np_Gain"
@@ -129,14 +128,14 @@
 
         <TextView
             android:id="@+id/text_Np_Gain"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="82dp"
+            android:layout_marginTop="75dp"
             android:text="NP Gain"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.279"
+            app:layout_constraintHorizontal_bias="0.315"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0" />

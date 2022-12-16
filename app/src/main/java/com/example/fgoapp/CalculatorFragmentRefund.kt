@@ -63,9 +63,6 @@ class CalculatorFragmentRefund : Fragment() {
 
             dataPassed = listOf(npGainBuff, hp1, hp2, hp3)
             passData(dataPassed)
-
-            val manager = requireActivity().supportFragmentManager
-            manager.beginTransaction().remove(this).commit()
         }
 
         return view
