@@ -390,7 +390,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.38"
-            tools:layout="@layout/fragment_calculator" />
+            tools:layout="@layout/fragment_calculator_results" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
