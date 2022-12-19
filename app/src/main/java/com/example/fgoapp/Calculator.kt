@@ -28,7 +28,7 @@ class Calculator : AppCompatActivity(), CalculatorFragmentRefund.OnDataPass {
         setContentView(R.layout.activity_calculator)
 
         val tabLayout: TabLayout = findViewById(R.id.tabLayout)
-        val viewPager: ViewPager = findViewById(R.id.viewPager)
+        val viewPager: ViewPager = findViewById(R.id.viewBackground)
 
         tabLayout.addTab(tabLayout.newTab().setText("Main"))
         tabLayout.addTab(tabLayout.newTab().setText("Refund"))

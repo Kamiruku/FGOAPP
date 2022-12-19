@@ -2,12 +2,13 @@ package com.example.fgoapp
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
+import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
+import android.widget.*
 
 class CalculatorFragmentRefund : Fragment() {
     lateinit var dataPasser: OnDataPass
@@ -29,8 +30,22 @@ class CalculatorFragmentRefund : Fragment() {
         val editTextEnemyThreeHp: EditText = view.findViewById(R.id.editTextEnemyThreeHp)
         val editTextNpGain: EditText = view.findViewById(R.id.editTextNpGain)
 
+        val spinnerEnemyOneClass: Spinner = view.findViewById(R.id.spinnerEnemyOneClass)
+        val spinnerEnemyTwoClass: Spinner = view.findViewById(R.id.spinnerEnemyTwoClass)
+        val spinnerEnemyThreeClass: Spinner = view.findViewById(R.id.spinnerEnemyThreeClass)
+
+        val spinnerAdapter: ImageSpinnerAdapter = ImageSpinnerAdapter(requireContext(), arrayOf(R.drawable.classicon_shielder, R.drawable.classicon_saber,
+        R.drawable.classicon_archer, R.drawable.classicon_lancer, R.drawable.classicon_rider, R.drawable.classicon_caster,
+        R.drawable.classicon_assassin, R.drawable.classicon_berserker, R.drawable.classicon_ruler, R.drawable.classicon_avenger,
+        R.drawable.classicon_mooncancer, R.drawable.classicon_alterego, R.drawable.classicon_foreigner, R.drawable.classicon_pretender))
+
+        spinnerEnemyOneClass.adapter = spinnerAdapter
+        spinnerEnemyTwoClass.adapter = spinnerAdapter
+        spinnerEnemyThreeClass.adapter = spinnerAdapter
+
         var dataPassed: List<String?>
 
+        /*
         if (arguments != null){
             val existingEnemies = requireArguments().getStringArray("EnemyDetails")
             editTextNpGain.setText(existingEnemies?.get(0) ?: String())
@@ -38,6 +53,7 @@ class CalculatorFragmentRefund : Fragment() {
             editTextEnemyTwoHp.setText(existingEnemies?.get(2) ?: String())
             editTextEnemyThreeHp.setText(existingEnemies?.get(3) ?: String())
         }
+        */
 
         val buttonExit: Button = view.findViewById(R.id.buttonExitRefund)
         buttonExit.setOnClickListener{
@@ -61,7 +77,16 @@ class CalculatorFragmentRefund : Fragment() {
                 false -> null
             }
 
-            dataPassed = listOf(npGainBuff, hp1, hp2, hp3)
+            /*
+            0: shielder, 1: saber, 2: archer, 3: lancer, 4: rider, 5: caster, 6: assassin, 7: berserker, 8: ruler,
+            9: avenger, 10: moon cancer, 11: alter ego, 12: foreigner, 13: pretender
+            */
+
+            val enemyClass1: String = getClass(spinnerEnemyOneClass.selectedItemPosition)
+            val enemyClass2: String = getClass(spinnerEnemyTwoClass.selectedItemPosition)
+            val enemyClass3: String = getClass(spinnerEnemyThreeClass.selectedItemPosition)
+
+            dataPassed = listOf(npGainBuff, hp1, enemyClass1, hp2, enemyClass2, hp3, enemyClass3)
             passData(dataPassed)
         }
 
@@ -74,5 +99,40 @@ class CalculatorFragmentRefund : Fragment() {
 
     fun passData(data: List<String?>){
         dataPasser.onDataPass(data)
+    }
+
+    fun getClass(position: Int): String{
+        return when(position){
+            0 -> "shielder"
+            1 -> "saber"
+            2 -> "archer"
+            3 -> "lancer"
+            4 -> "rider"
+            5 -> "caster"
+            6 -> "assassin"
+            7 -> "berserker"
+            8 -> "ruler"
+            9 -> "avenger"
+            10 -> "moonCancer"
+            11 -> "alterEgo"
+            12 -> "foreigner"
+            13 -> "pretender"
+            else -> "shielder"
+        }
+    }
+}
+
+class ImageSpinnerAdapter(context: Context, images: Array<Int>) :
+    ArrayAdapter<Int>(context, android.R.layout.simple_spinner_item, images) {
+
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup) =
+        getImageForPosition(position)
+
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup) =
+        getImageForPosition(position)
+
+    private fun getImageForPosition(position: Int) = ImageView(context).apply {
+        setBackgroundResource(getItem(position)!!)
+        layoutParams = ViewGroup.LayoutParams(125, 125)
     }
 }
