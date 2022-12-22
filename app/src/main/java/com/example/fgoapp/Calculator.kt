@@ -33,7 +33,7 @@ class Calculator : AppCompatActivity(), CalculatorFragmentRefund.OnDataPass {
         tabLayout.addTab(tabLayout.newTab().setText("Main"))
         tabLayout.addTab(tabLayout.newTab().setText("Refund"))
 
-        val adapter: MyAdapter = MyAdapter(this, supportFragmentManager, tabLayout.tabCount, enemyDetails)
+        val adapter: MyAdapter = MyAdapter(this, supportFragmentManager, tabLayout.tabCount)
         viewPager.adapter = adapter
 
         viewPager.addOnPageChangeListener(TabLayoutOnPageChangeListener(tabLayout))
@@ -53,7 +53,7 @@ class Calculator : AppCompatActivity(), CalculatorFragmentRefund.OnDataPass {
     }
 }
 
-class MyAdapter(context: Context, fm: FragmentManager?, totalTabs: Int, enemyDetails: List<String?>) : FragmentPagerAdapter(fm!!) {
+class MyAdapter(context: Context, fm: FragmentManager?, totalTabs: Int) : FragmentPagerAdapter(fm!!) {
     private val myContext: Context
     private var totalTabs: Int
 

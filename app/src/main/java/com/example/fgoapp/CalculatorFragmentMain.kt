@@ -255,6 +255,8 @@ class CalculatorFragmentMain : Fragment() {
         val npDistribution: List<Int> = servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npDistribution
         val offensiveNPRate: Double = servantInfo.noblePhantasms[servantInfo.noblePhantasms.size - 1].npGain.np[0].toDouble()
 
+        var advantage: Double
+
         if (npDamageMultiplier != 0.0){
             lowRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 0.9, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
             averageRollDamage = calculateDamage(servantAtk, classAtkBonus, cardDamageValue, npDamageMultiplier, cardMod, 1.0, atkMod, powerMod, npDamageMod, isSuperEffective, superEffectiveModifier, dmgPlusAdd)
@@ -266,71 +268,86 @@ class CalculatorFragmentMain : Fragment() {
                     Log.d("NP", npChargeRateMod.toString())
 
                     val refundLow1 = if (enemyDetails[1] != null){
-                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage, cardMod)
+                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
-                    val refundLow2 = if (enemyDetails[2] != null){
-                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), lowRollDamage, cardMod)
+                    val refundLow2 = if (enemyDetails[3] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
-                    val refundLow3 = if (enemyDetails[3] != null){
-                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage, cardMod)
+                    val refundLow3 = if (enemyDetails[5] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[5]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh1 = if (enemyDetails[1] != null){
-                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage, cardMod)
+                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
-                    val refundHigh2 = if (enemyDetails[2] != null){
-                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), highRollDamage, cardMod)
+                    val refundHigh2 = if (enemyDetails[3] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
-                    val refundHigh3 = if (enemyDetails[3] != null){
-                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage, cardMod)
+                    val refundHigh3 = if (enemyDetails[5] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[5]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundLowTotal = doubleArrayOf(refundLow1, refundLow2, refundLow3)
                     val refundHighTotal = doubleArrayOf(refundHigh1, refundHigh2, refundHigh3)
+                    Log.d("H1", refundHigh1.toString())
+                    Log.d("H2", refundHigh2.toString())
+                    Log.d("H3", refundHigh3.toString())
                     bundle.putDoubleArray("TotalRefundLow", refundLowTotal)
                     bundle.putDoubleArray("TotalRefundHigh", refundHighTotal)
                 }
                 else{
                     val refundLow1 = if (enemyDetails[1] != null){
-                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage, cardMod)
+                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
-                    val refundLow2 = if (enemyDetails[2] != null){
-                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), lowRollDamage, cardMod)
+                    val refundLow2 = if (enemyDetails[3] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), lowRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
-                    val refundLow3 = if (enemyDetails[3] != null){
-                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage, cardMod)
+                    val refundLow3 = if (enemyDetails[5] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh1 = if (enemyDetails[1] != null){
-                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage, cardMod)
+                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
-                    val refundHigh2 = if (enemyDetails[2] != null){
-                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), highRollDamage, cardMod)
+                    val refundHigh2 = if (enemyDetails[3] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), highRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
-                    val refundHigh3 = if (enemyDetails[3] != null){
-                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage, cardMod)
+                    val refundHigh3 = if (enemyDetails[5] != null){
+                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
@@ -469,5 +486,158 @@ class CalculatorFragmentMain : Fragment() {
         finally{
             inputStream!!.close()
         }
+    }
+
+    private fun checkClassBonus(servant: String, enemy: String): Double{
+        if (servant == "saber"){
+            if (enemy == "lancer" || enemy == "berserker"){
+                return 2.0
+            }
+            else if (enemy == "archer" || enemy == "ruler"){
+                return 0.5
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "archer"){
+            if (enemy == "saber" || enemy == "berserker"){
+                return 2.0
+            }
+            else if (enemy == "lancer" || enemy == "ruler"){
+                return 0.5
+            }
+            else{
+                return 1.0
+            }
+        }
+
+        if (servant == "lancer"){
+            if (enemy == "archer" || enemy == "berserker"){
+                return 2.0
+            }
+            else if (enemy == "saber" || enemy == "ruler"){
+                return 0.5
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "rider"){
+            if (enemy == "caster" || enemy == "berserker"){
+                return 2.0
+            }
+            else if (enemy == "assassin" || enemy == "ruler"){
+                return 0.5
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "caster"){
+            if (enemy == "assassin" || enemy == "berserker"){
+                return 2.0
+            }
+            else if (enemy == "rider" || enemy == "ruler"){
+                return 0.5
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "assassin"){
+            if (enemy == "rider" || enemy == "berserker"){
+                return 2.0
+            }
+            else if (enemy == "caster" || enemy == "ruler"){
+                return 0.5
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "berserker"){
+            if (enemy == "shielder"){
+                return 1.0
+            }
+            else if (enemy == "foreigner"){
+                return 0.5
+            }
+            else{
+                return 1.5
+            }
+        }
+
+        if (servant == "ruler"){
+            if (enemy == "berserker" || enemy == "moonCancer"){
+                return 2.0
+            }
+            else if (enemy == "avenger"){
+                return 0.5
+            }
+            else{
+                return 1.0
+            }
+        }
+
+        if (servant == "avenger"){
+            if (enemy == "ruler" || enemy == "berserker"){
+                return 2.0
+            }
+            else if (enemy == "moonCancer"){
+                return 0.5
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "alterEgo"){
+            if (enemy == "saber" || enemy == "archer" || enemy == "lancer" || enemy == "pretender"){
+                return 0.5
+            }
+            else if (enemy == "rider" || enemy == "caster" || enemy == "assassin"){
+                return 1.5
+            }
+            else if (enemy == "berserker" || enemy == "foreigner") {
+                return 2.0
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "foreigner"){
+            if (enemy == "berserker" || enemy == "pretender" || enemy == "foreigner"){
+                return 2.0
+            }
+            else if (enemy == "alterEgo"){
+                return 0.5
+            }
+            else {
+                return 1.0
+            }
+        }
+
+        if (servant == "pretender"){
+            if (enemy == "saber" || enemy == "archer" || enemy == "lancer"){
+                return 1.5
+            }
+            else if (enemy == "rider" || enemy == "caster" || enemy == "assassin" || enemy == "foreigner"){
+                return 0.5
+            }
+            else if (enemy == "berserker" || enemy == "alterego"){
+                return 2.0
+            }
+            else {
+                return 1.0
+            }
+        }
+        return 1.0
     }
 }
