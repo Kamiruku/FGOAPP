@@ -82,9 +82,9 @@ class CalculatorFragmentRefund : Fragment() {
             9: avenger, 10: moon cancer, 11: alter ego, 12: foreigner, 13: pretender
             */
 
-            val enemyClass1: String = getClass(spinnerEnemyOneClass.selectedItemPosition)
-            val enemyClass2: String = getClass(spinnerEnemyTwoClass.selectedItemPosition)
-            val enemyClass3: String = getClass(spinnerEnemyThreeClass.selectedItemPosition)
+            val enemyClass1: String = (spinnerEnemyOneClass.selectedItemPosition).toString()
+            val enemyClass2: String = (spinnerEnemyTwoClass.selectedItemPosition).toString()
+            val enemyClass3: String = (spinnerEnemyThreeClass.selectedItemPosition).toString()
 
             dataPassed = listOf(npGainBuff, hp1, enemyClass1, hp2, enemyClass2, hp3, enemyClass3)
             passData(dataPassed)
@@ -99,26 +99,6 @@ class CalculatorFragmentRefund : Fragment() {
 
     fun passData(data: List<String?>){
         dataPasser.onDataPass(data)
-    }
-
-    fun getClass(position: Int): String{
-        return when(position){
-            0 -> "shielder"
-            1 -> "saber"
-            2 -> "archer"
-            3 -> "lancer"
-            4 -> "rider"
-            5 -> "caster"
-            6 -> "assassin"
-            7 -> "berserker"
-            8 -> "ruler"
-            9 -> "avenger"
-            10 -> "moonCancer"
-            11 -> "alterEgo"
-            12 -> "foreigner"
-            13 -> "pretender"
-            else -> "shielder"
-        }
     }
 }
 

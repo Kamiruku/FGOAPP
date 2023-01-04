@@ -268,38 +268,38 @@ class CalculatorFragmentMain : Fragment() {
                     Log.d("NP", npChargeRateMod.toString())
 
                     val refundLow1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundLow2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundLow3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[5]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
                     val refundHigh3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[5]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
@@ -314,39 +314,39 @@ class CalculatorFragmentMain : Fragment() {
                 }
                 else{
                     val refundLow1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundLow2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), lowRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
                     val refundLow3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[2]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[4]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), highRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
                     val refundHigh3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(servantClass, enemyDetails[6]!!)
+                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
@@ -488,156 +488,43 @@ class CalculatorFragmentMain : Fragment() {
         }
     }
 
+    private fun getClassNumber(enemyClass: String): String{
+        return when(enemyClass){
+            "shielder" -> "0"
+            "saber" -> "1"
+            "archer" -> "2"
+            "lancer" -> "3"
+            "rider" -> "4"
+            "caster" -> "5"
+            "assassin" -> "6"
+            "berserker" -> "7"
+            "ruler" -> "8"
+            "avenger" -> "9"
+            "moonCancer" -> "10"
+            "alterEgo" -> "11"
+            "foreigner" -> "12"
+            "pretender" -> "13"
+            else -> "0"
+        }
+    }
+
     private fun checkClassBonus(servant: String, enemy: String): Double{
-        if (servant == "saber"){
-            if (enemy == "lancer" || enemy == "berserker"){
-                return 2.0
-            }
-            else if (enemy == "archer" || enemy == "ruler"){
-                return 0.5
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "archer"){
-            if (enemy == "saber" || enemy == "berserker"){
-                return 2.0
-            }
-            else if (enemy == "lancer" || enemy == "ruler"){
-                return 0.5
-            }
-            else{
-                return 1.0
-            }
-        }
-
-        if (servant == "lancer"){
-            if (enemy == "archer" || enemy == "berserker"){
-                return 2.0
-            }
-            else if (enemy == "saber" || enemy == "ruler"){
-                return 0.5
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "rider"){
-            if (enemy == "caster" || enemy == "berserker"){
-                return 2.0
-            }
-            else if (enemy == "assassin" || enemy == "ruler"){
-                return 0.5
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "caster"){
-            if (enemy == "assassin" || enemy == "berserker"){
-                return 2.0
-            }
-            else if (enemy == "rider" || enemy == "ruler"){
-                return 0.5
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "assassin"){
-            if (enemy == "rider" || enemy == "berserker"){
-                return 2.0
-            }
-            else if (enemy == "caster" || enemy == "ruler"){
-                return 0.5
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "berserker"){
-            if (enemy == "shielder"){
-                return 1.0
-            }
-            else if (enemy == "foreigner"){
-                return 0.5
-            }
-            else{
-                return 1.5
-            }
-        }
-
-        if (servant == "ruler"){
-            if (enemy == "berserker" || enemy == "moonCancer"){
-                return 2.0
-            }
-            else if (enemy == "avenger"){
-                return 0.5
-            }
-            else{
-                return 1.0
-            }
-        }
-
-        if (servant == "avenger"){
-            if (enemy == "ruler" || enemy == "berserker"){
-                return 2.0
-            }
-            else if (enemy == "moonCancer"){
-                return 0.5
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "alterEgo"){
-            if (enemy == "saber" || enemy == "archer" || enemy == "lancer" || enemy == "pretender"){
-                return 0.5
-            }
-            else if (enemy == "rider" || enemy == "caster" || enemy == "assassin"){
-                return 1.5
-            }
-            else if (enemy == "berserker" || enemy == "foreigner") {
-                return 2.0
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "foreigner"){
-            if (enemy == "berserker" || enemy == "pretender" || enemy == "foreigner"){
-                return 2.0
-            }
-            else if (enemy == "alterEgo"){
-                return 0.5
-            }
-            else {
-                return 1.0
-            }
-        }
-
-        if (servant == "pretender"){
-            if (enemy == "saber" || enemy == "archer" || enemy == "lancer"){
-                return 1.5
-            }
-            else if (enemy == "rider" || enemy == "caster" || enemy == "assassin" || enemy == "foreigner"){
-                return 0.5
-            }
-            else if (enemy == "berserker" || enemy == "alterego"){
-                return 2.0
-            }
-            else {
-                return 1.0
-            }
-        }
-        return 1.0
+        val classBonus = arrayOf(
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 2.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 1.5),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.5, 2.0, 2.0),
+            doubleArrayOf(1.0, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0)
+        )
+        return classBonus[servant.toInt()][enemy.toInt()]
     }
 }
