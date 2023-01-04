@@ -268,38 +268,38 @@ class CalculatorFragmentMain : Fragment() {
                     Log.d("NP", npChargeRateMod.toString())
 
                     val refundLow1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundLow2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundLow3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[5]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
                     val refundHigh3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(npChargeRateMod, offensiveNPRate, npDistribution, servantNpType, enemyDetails[5]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
@@ -314,39 +314,39 @@ class CalculatorFragmentMain : Fragment() {
                 }
                 else{
                     val refundLow1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundLow2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), lowRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
                     val refundLow3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), lowRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh1 = if (enemyDetails[1] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[2]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[2]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[1]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
 
                     val refundHigh2 = if (enemyDetails[3] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[4]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[4]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[2]!!.toDouble(), highRollDamage * advantage, cardMod)
 
                     }
                     else{ 0.00 }
 
                     val refundHigh3 = if (enemyDetails[5] != null){
-                        advantage = checkClassBonus(getClassNumber(servantClass), enemyDetails[6]!!)
+                        advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[6]!!)
                         calculateNpRefund(0.0, offensiveNPRate, npDistribution, servantNpType, enemyDetails[3]!!.toDouble(), highRollDamage * advantage, cardMod)
                     }
                     else{ 0.00 }
@@ -488,7 +488,7 @@ class CalculatorFragmentMain : Fragment() {
         }
     }
 
-    private fun getClassNumber(enemyClass: String): String{
+    private fun convertClassStringToNumber(enemyClass: String): String{
         return when(enemyClass){
             "shielder" -> "0"
             "saber" -> "1"
