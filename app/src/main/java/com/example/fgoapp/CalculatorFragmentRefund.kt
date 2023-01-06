@@ -97,7 +97,7 @@ class CalculatorFragmentRefund : Fragment() {
         fun onDataPass(data: List<String?>)
     }
 
-    fun passData(data: List<String?>){
+    private fun passData(data: List<String?>){
         dataPasser.onDataPass(data)
     }
 }
