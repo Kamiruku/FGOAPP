@@ -55,8 +55,7 @@ class MainActivity : AppCompatActivity() {
     private fun rewriteJson(){
         val gson = Gson()
 
-        var servantInfoValue: ServantDump =
-            (gson.fromJson(getJsonFromAssets(), ServantDump::class.java))
+        var servantInfoValue: ServantDump = (gson.fromJson(getJsonFromAssets(), ServantDump::class.java))
         var string = gson.toJson(servantInfoValue)
 
         val path = filesDir
