@@ -24,6 +24,23 @@ class CalculatorFragmentMain : Fragment() {
         val data = Data()
         val placeHolderForSupports = listOf(ServantDump.ServantDumpItem.NoblePhantasm.Function.Sval(0, 0))
 
+        val classBonus = arrayOf(
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 2.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 1.5),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0),
+            doubleArrayOf(1.0, 0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5),
+            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.5, 2.0, 2.0),
+            doubleArrayOf(1.0, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0)
+        )
+
         //Set up the autocomplete servant name field
         val autoCompleteServantName: AutoCompleteTextView = view.findViewById(R.id.autoCompleteServantName)
         val adapterAutoCompleteNames: ArrayAdapter<String> =
@@ -198,7 +215,7 @@ class CalculatorFragmentMain : Fragment() {
                 servantNpType = servantDetailsList[0].noblePhantasms[servantDetailsList[0].noblePhantasms.size - 1].card
                 servantAtk = atkGrowth[selectedLevel.toInt() - 1].toDouble() + fou //reupdates servant atk and displays it - redundant
                 textViewAtkStat.text = getString(R.string.numberPlus, servantAtk.toInt().toString())
-                showDamage(servantDetailsList[0], fragmentView, view1, servantClass, servantNpType, npDamageMultiplier!!, servantAtk)
+                showDamage(classBonus, servantDetailsList[0], fragmentView, view1, servantClass, servantNpType, npDamageMultiplier!!, servantAtk)
             }
             else{
                 //only occurs if user does not click anything from the suggestion box
@@ -209,7 +226,7 @@ class CalculatorFragmentMain : Fragment() {
         return view
     }
 
-    private fun showDamage(servantInfo: ServantDump.ServantDumpItem, fragmentView: View, view1: View, servantClass: String, servantNpType: String, npDamageMultiplier: Double, servantAtk: Double){
+    private fun showDamage(classBonus: Array<DoubleArray>, servantInfo: ServantDump.ServantDumpItem, fragmentView: View, view1: View, servantClass: String, servantNpType: String, npDamageMultiplier: Double, servantAtk: Double){
         val editTextCardBuffs: EditText = requireView().findViewById(R.id.editText_Card_Buff)
         val editTextAttackBuffs: EditText = requireView().findViewById(R.id.editText_Attack_Buff)
         val editTextNPDamageBuffs: EditText = requireView().findViewById(R.id.editText_NPDamage_Buff)
@@ -268,7 +285,7 @@ class CalculatorFragmentMain : Fragment() {
                     val npChargeRateMod = enemyDetails[0]!!.toDouble() / 100
                     Log.d("NP", npChargeRateMod.toString())
 
-                    advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[2]!!)
+                    advantage = checkClassBonus(classBonus, convertClassStringToNumber(servantClass), enemyDetails[2]!!)
                     enemyServerMod = returnEnemyServerMod(enemyDetails[2]!!)
 
                     val refundLow1 = if (enemyDetails[1] != null){
@@ -281,7 +298,7 @@ class CalculatorFragmentMain : Fragment() {
                     }
                     else{ 0.00 }
 
-                    advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[4]!!)
+                    advantage = checkClassBonus(classBonus, convertClassStringToNumber(servantClass), enemyDetails[4]!!)
                     enemyServerMod = returnEnemyServerMod(enemyDetails[4]!!)
 
                     val refundLow2 = if (enemyDetails[3] != null){
@@ -294,7 +311,7 @@ class CalculatorFragmentMain : Fragment() {
                     }
                     else{ 0.00 }
 
-                    advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[6]!!)
+                    advantage = checkClassBonus(classBonus, convertClassStringToNumber(servantClass), enemyDetails[6]!!)
                     enemyServerMod = returnEnemyServerMod(enemyDetails[6]!!)
 
                     val refundLow3 = if (enemyDetails[5] != null){
@@ -313,7 +330,7 @@ class CalculatorFragmentMain : Fragment() {
                     bundle.putDoubleArray("TotalRefundHigh", refundHighTotal)
                 }
                 else{
-                    advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[2]!!)
+                    advantage = checkClassBonus(classBonus, convertClassStringToNumber(servantClass), enemyDetails[2]!!)
                     enemyServerMod = returnEnemyServerMod(enemyDetails[2]!!)
 
                     val refundLow1 = if (enemyDetails[1] != null){
@@ -326,7 +343,7 @@ class CalculatorFragmentMain : Fragment() {
                     }
                     else{ 0.00 }
 
-                    advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[4]!!)
+                    advantage = checkClassBonus(classBonus, convertClassStringToNumber(servantClass), enemyDetails[4]!!)
                     enemyServerMod = returnEnemyServerMod(enemyDetails[4]!!)
 
                     val refundLow2 = if (enemyDetails[3] != null){
@@ -339,7 +356,7 @@ class CalculatorFragmentMain : Fragment() {
                     }
                     else{ 0.00 }
 
-                    advantage = checkClassBonus(convertClassStringToNumber(servantClass), enemyDetails[6]!!)
+                    advantage = checkClassBonus(classBonus, convertClassStringToNumber(servantClass), enemyDetails[6]!!)
                     enemyServerMod = returnEnemyServerMod(enemyDetails[6]!!)
 
                     val refundLow3 = if (enemyDetails[5] != null){
@@ -508,23 +525,7 @@ class CalculatorFragmentMain : Fragment() {
         }
     }
 
-    private fun checkClassBonus(servant: String, enemy: String): Double{
-        val classBonus = arrayOf(
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 0.5, 1.0, 2.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0, 2.0, 0.5, 1.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 1.5, 0.5, 1.5),
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 0.5, 2.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 2.0, 1.0, 0.5, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5, 2.0, 1.0, 1.0, 1.0, 1.0),
-            doubleArrayOf(1.0, 0.5, 0.5, 0.5, 1.5, 1.5, 1.5, 2.0, 1.0, 1.0, 1.0, 1.0, 2.0, 0.5),
-            doubleArrayOf(1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 2.0, 1.0, 1.0, 1.0, 0.5, 2.0, 2.0),
-            doubleArrayOf(1.0, 1.5, 1.5, 1.5, 0.5, 0.5, 0.5, 2.0, 1.0, 1.0, 1.0, 2.0, 0.5, 1.0)
-        )
+    private fun checkClassBonus(classBonus: Array<DoubleArray>, servant: String, enemy: String): Double{
         return classBonus[servant.toInt()][enemy.toInt()]
     }
 
