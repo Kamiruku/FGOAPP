@@ -11,11 +11,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.google.android.material.tabs.TabLayout.TabLayoutOnPageChangeListener
 
-class Calculator : AppCompatActivity(), CalculatorFragmentRefund.OnDataPass {
-    companion object{
-        var enemyDetails: List<String?> = emptyList()
-    }
-
+class Calculator : AppCompatActivity() {
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
         if (hasFocus) {
@@ -46,10 +42,6 @@ class Calculator : AppCompatActivity(), CalculatorFragmentRefund.OnDataPass {
             override fun onTabUnselected(tab: TabLayout.Tab) {}
             override fun onTabReselected(tab: TabLayout.Tab) {}
         })
-    }
-
-    override fun onDataPass(data: List<String?>) {
-        enemyDetails = data
     }
 }
 

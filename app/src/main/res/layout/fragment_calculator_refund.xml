@@ -23,7 +23,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <EditText
-            android:id="@+id/editTextEnemyOneHp"
+            android:id="@+id/editTextE1Hp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
@@ -38,7 +38,7 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <Spinner
-            android:id="@+id/spinnerEnemyOneClass"
+            android:id="@+id/spinnerE1Class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -47,24 +47,38 @@
             app:layout_constraintBottom_toBottomOf="@+id/viewBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/editTextEnemyOneHp"
+            app:layout_constraintStart_toEndOf="@+id/editTextE1Hp"
             app:layout_constraintTop_toBottomOf="@+id/editTextNpGain"
             app:layout_constraintVertical_bias="0.0" />
 
+        <Spinner
+            android:id="@+id/spinnerE1Trait"
+            android:layout_width="wrap_content"
+            android:layout_height="48sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/checkBoxE1Special"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextE1Hp"
+            app:layout_constraintVertical_bias="0.0" />
+
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/checkBoxE1Special"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Special?"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.795"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEnemyOneHp"
+            app:layout_constraintTop_toBottomOf="@+id/editTextE1Hp"
             app:layout_constraintVertical_bias="0.0" />
 
         <EditText
-            android:id="@+id/editTextEnemyTwoHp"
+            android:id="@+id/editTextE2Hp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -75,11 +89,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.353"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxE1Special"
             app:layout_constraintVertical_bias="0.002" />
 
         <Spinner
-            android:id="@+id/spinnerEnemyTwoClass"
+            android:id="@+id/spinnerE2Class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -88,24 +102,38 @@
             app:layout_constraintBottom_toBottomOf="@+id/viewBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/editTextEnemyTwoHp"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox"
+            app:layout_constraintStart_toEndOf="@+id/editTextE2Hp"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxE1Special"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Spinner
+            android:id="@+id/spinnerE2Trait"
+            android:layout_width="wrap_content"
+            android:layout_height="48sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/checkBoxE2Special"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextE2Hp"
             app:layout_constraintVertical_bias="0.0" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/checkBoxE2Special"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Special?"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.79"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEnemyTwoHp"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/editTextE2Hp"
+            app:layout_constraintVertical_bias="0.002" />
 
         <EditText
-            android:id="@+id/editTextEnemyThreeHp"
+            android:id="@+id/editTextE3Hp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -116,11 +144,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.353"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox2"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxE2Special"
             app:layout_constraintVertical_bias="0.0" />
 
         <Spinner
-            android:id="@+id/spinnerEnemyThreeClass"
+            android:id="@+id/spinnerE3Class"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
@@ -129,32 +157,34 @@
             app:layout_constraintBottom_toBottomOf="@+id/viewBackground"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/editTextEnemyThreeHp"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox2"
+            app:layout_constraintStart_toEndOf="@+id/editTextE3Hp"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxE2Special"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Spinner
+            android:id="@+id/spinnerE3Trait"
+            android:layout_width="wrap_content"
+            android:layout_height="48sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/checkBoxE3Special"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextE3Hp"
             app:layout_constraintVertical_bias="0.0" />
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/checkBoxE3Special"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:text="Special?"
             app:layout_constraintBottom_toBottomOf="@+id/viewBackground"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.79"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextEnemyThreeHp"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/buttonExitRefund"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Initialise Enemies"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/checkBox3"
+            app:layout_constraintTop_toBottomOf="@+id/editTextE3Hp"
             app:layout_constraintVertical_bias="0.0" />
 
         <EditText
@@ -183,6 +213,18 @@
             app:layout_constraintHorizontal_bias="0.315"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/buttonExitRefund"
+            android:layout_width="125dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Initialise Enemies"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/checkBoxE3Special"
             app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

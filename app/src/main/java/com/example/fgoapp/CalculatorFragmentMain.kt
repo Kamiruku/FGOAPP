@@ -13,10 +13,20 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import com.example.fgoapp.Calculator.Companion.enemyDetails
+import androidx.fragment.app.setFragmentResultListener
 import java.io.InputStream
 
 class CalculatorFragmentMain : Fragment() {
+    private var enemyDetails: Array<String> = emptyArray()
+
+    override fun onCreate(savedInstanceState: Bundle?){
+        super.onCreate(savedInstanceState)
+
+        setFragmentResultListener("requestKey") { key, bundle ->
+            enemyDetails = bundle.getStringArray("data") as Array<String>
+        }
+
+    }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_calculator_main, container, false)
@@ -222,7 +232,6 @@ class CalculatorFragmentMain : Fragment() {
                 Toast.makeText(requireContext(), "Please select a servant from the suggestion box.", Toast.LENGTH_LONG).show()
             }
         }
-
         return view
     }
 
